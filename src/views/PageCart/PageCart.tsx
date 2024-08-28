@@ -17,9 +17,8 @@ import {
   PAYMENT_STATUS,
   PHARMA_PROFS,
 } from "../../constant";
-import { LINK_PAGE_CHECKOUT } from "../../routes";
+import { LINK_PAGE_CHECKOUT, LINK_PAGE_WEBINAR_LISTING } from "../../routes";
 import OrderService from "../../services/OrderService";
-import PaymentService from "../../services/PaymentService";
 import WebinarService from "../../services/WebinarService";
 import {
   validateGetRequest,
@@ -111,41 +110,29 @@ const PageCart: React.FC = () => {
       LOCAL_STORAGE_ITEMS.CART_DATA,
       JSON.stringify({
         ...userData,
+        ...webinarData,
         ...purchaseWebinarData,
         ...cartFormData,
       })
     );
 
-    try {
-      const res = await PaymentService.createStripePaymentRequest(
-        JSON.stringify({ amount: purchaseWebinarData?.cartTotal }),
-        {
-          "Content-Type": "application/json",
-        }
-      );
-      if (validatePostRequest(res)) {
-        const { amount, clientSecret, date_time } = res.data;
-        navigate(LINK_PAGE_CHECKOUT, {
-          state: { amount, clientSecret, date_time },
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    navigate(LINK_PAGE_CHECKOUT, {
+      state: {
+        amount: purchaseWebinarData?.cartTotal,
+        customerName: cartFormData.customerName,
+        email: cartFormData.billingEmail || userData.email,
+        country: cartFormData?.country,
+      },
+    });
   };
 
   const onCancel = async () => {
-    const currDate = new Date();
-
     const jsonPayload = {
       customeremail: userData?.email,
       paymentstatus: PAYMENT_STATUS.PENDING,
       billingemail: null,
       website: PHARMA_PROFS.WEBSITE,
       orderamount: null,
-      orderdate: currDate,
-      ordertime: currDate,
-      ordertimezone: currDate,
       topic: webinarData?.topic,
       webinardate: webinarData?.date,
       sessionLive: webinarData?.sessionLive,
@@ -170,7 +157,8 @@ const PageCart: React.FC = () => {
     try {
       const res = await OrderService.createOrder(formDataPayload);
       if (validatePostRequest(res)) {
-        console.log("Cancelled res", res);
+        localStorage.removeItem(LOCAL_STORAGE_ITEMS.PURCHASE_INFO);
+        navigate(LINK_PAGE_WEBINAR_LISTING);
       }
     } catch (error) {
       console.error(error);
@@ -246,7 +234,10 @@ const PageCart: React.FC = () => {
                 </div>
 
                 <div className="px-2 flex flex-col gap-1">
-                  <label>{"Address"}</label>
+                  <label>
+                    {"Address"}
+                    <span className="text-primary-asterisk">{"*"}</span>
+                  </label>
                   <InputTextarea
                     className={
                       "w-full min-h-40 p-2 border border-primary-light-900"

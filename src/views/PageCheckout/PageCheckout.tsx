@@ -1,18 +1,22 @@
 import {
+  CardElement,
   Elements,
-  PaymentElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { BaseSyntheticEvent, ReactNode, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AuthValidator from "../../components/AuthValidator";
 import ButtonCustom from "../../components/ButtonCustom";
 import DialogCustom from "../../components/DialogCustom";
 import { ENV_VAR, LOCAL_STORAGE_ITEMS } from "../../constant";
 import { LINK_PAGE_CONFIRM_PAYMENT } from "../../routes";
-import { getEnvVariableValues } from "../../utils/commonUtils";
+import PaymentService from "../../services/PaymentService";
+import {
+  getEnvVariableValues,
+  validatePostRequest,
+} from "../../utils/commonUtils";
 
 const stripePromise = loadStripe(
   getEnvVariableValues(ENV_VAR.VITE_REACT_APP_STRIPE_PUBLISHABLE_KEY)
@@ -23,28 +27,68 @@ const CheckoutForm = (props: any) => {
   const elements = useElements();
 
   const [showPaymentFailure, setShowPaymentFailure] = useState(false);
+  const [showPaymentInProgress, setShowPaymentInProgress] = useState(false);
+
+  const { checkoutInfo } = props;
 
   /*--------------------Event Handlers------------------*/
   const handleStripePay = async (event: BaseSyntheticEvent) => {
     event.preventDefault();
+    setShowPaymentInProgress(true);
 
     if (!stripe || !elements) {
       return;
     }
 
-    try {
-      const result = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin + LINK_PAGE_CONFIRM_PAYMENT}`,
-        },
-      });
+    const cardElement = elements?.getElement(CardElement);
+    if (cardElement) {
+      const { token } = await stripe.createToken(cardElement);
 
-      if (result.error) {
+      try {
+        if (token) {
+          const res = await PaymentService.createStripePaymentRequest(
+            JSON.stringify({
+              stripeToken: token.id,
+              amount: checkoutInfo?.amount,
+              name: checkoutInfo?.customerName,
+              email: checkoutInfo?.email,
+              country: checkoutInfo?.country,
+            }),
+            {
+              "Content-Type": "application/json",
+            }
+          );
+
+          if (validatePostRequest(res)) {
+            if (res?.data?.success) {
+              setShowPaymentInProgress(false);
+              localStorage.setItem(
+                LOCAL_STORAGE_ITEMS.PAYMENT_STATUS_SUCCESS,
+                JSON.stringify({
+                  ...checkoutInfo,
+                  date_time: res?.data?.date_time,
+                })
+              );
+              window.location.href = `${
+                window.location.origin + LINK_PAGE_CONFIRM_PAYMENT
+              }`;
+            } else {
+              setShowPaymentFailure(true);
+              setShowPaymentInProgress(false);
+            }
+          }
+        } else {
+          setShowPaymentFailure(true);
+          setShowPaymentInProgress(false);
+        }
+      } catch (error) {
+        console.error(error);
         setShowPaymentFailure(true);
+        setShowPaymentInProgress(false);
       }
-    } catch (error) {
+    } else {
       setShowPaymentFailure(true);
+      setShowPaymentInProgress(false);
     }
   };
 
@@ -81,13 +125,18 @@ const CheckoutForm = (props: any) => {
         className="my-5 p-5 flex flex-col items-center justify-center"
         onSubmit={handleStripePay}
       >
-        <div>
-          <PaymentElement />
+        <div className="min-w-[400px]">
+          <div className="my-8 text-left text-sm text-primary-bg-teal font-bold">
+            Please enter your card details
+          </div>
+          <CardElement />
           <ButtonCustom
             containerClassName="my-8"
             className="w-full p-2 text-center bg-primary-bg-teal text-primary-pTextLight rounded-md"
             type={"submit"}
             label={`Pay $${props?.checkoutInfo?.amount}`}
+            isLoading={showPaymentInProgress}
+            labelClassName={`mx-2`}
             disabled={!stripe}
           />
         </div>
@@ -115,27 +164,28 @@ const CheckoutForm = (props: any) => {
 };
 
 const PageCheckout = () => {
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const onMount = async () => {
-      localStorage.setItem(
-        LOCAL_STORAGE_ITEMS.SESSION_INFO,
-        JSON.stringify(location?.state)
-      );
+      if (!location?.state) {
+        navigate(-1);
+      }
     };
     onMount();
-  }, [location]);
+  }, [location, navigate]);
 
-  const options = {
-    // passing the client secret obtained from the server
-    clientSecret: location?.state?.clientSecret,
-  };
+  // const options = {
+  //   // passing the client secret obtained from the server
+  //   clientSecret: location?.state?.clientSecret,
+  // };
 
   return (
     <AuthValidator>
       <div className="page-margin">
-        <Elements stripe={stripePromise} options={options}>
+        {/* <Elements stripe={stripePromise} options={options}> */}
+        <Elements stripe={stripePromise}>
           <CheckoutForm checkoutInfo={location?.state} />
         </Elements>
       </div>

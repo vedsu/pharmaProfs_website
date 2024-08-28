@@ -46,11 +46,23 @@ export const USER_ROLE = {
   ATTENDEE: "Attendee",
 };
 
+export const SUBSCRIPTION_TYPE = {
+  WEEKLY: "weekly",
+  MONTHLY: "monthly",
+  QUARTERLY: "quarterly",
+};
+
+export const CARD_SUGGESTIONS = {
+  CONTINUE_PURCHASE: "continuePurchaseAfterReg",
+};
+
 export const LOCAL_STORAGE_ITEMS = {
   USERINFO: "userInfo",
+  CARD_CONTINUE_PURCHASE: CARD_SUGGESTIONS.CONTINUE_PURCHASE,
   PURCHASE_INFO: "purchaseWebinarInfo",
-  CART_DATA: "cartData",
-  SESSION_INFO: "stripeSession",
+  CART_DATA: "cartDataInfo",
+  PAYMENT_STATUS_SUCCESS: "paymentSuccessInfo",
+  PURCHASE_SUCCESS_MESSAGE: "purchaseSuccessMessageInfo",
 };
 
 export const SESSION_STORAGE_ITEMS = {

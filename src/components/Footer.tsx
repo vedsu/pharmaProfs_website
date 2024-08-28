@@ -197,7 +197,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="temp-primary-footer text-primary-pText">
+    <footer className="pp-footer text-primary-pText">
       <div className="footer-nav-wrapper py-5">
         <div className="w-64 flex items-center justify-center">
           <img className="" src={brandLogo} alt="logo" />
@@ -208,28 +208,28 @@ const Footer = () => {
             <div className="flex gap-4 text-white text-sm">
               <a
                 className="pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
-                href="#"
+                href="https://www.linkedin.com/company/pharma-profs"
                 target="_blank"
               >
                 <i className="pi pi-linkedin"></i>
               </a>
               <a
                 className="pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
-                href="#"
+                href="https://x.com"
                 target="_blank"
               >
                 <i className="pi pi-twitter"></i>
               </a>
               <a
                 className="pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
-                href="#"
+                href="https://www.youtube.com/@PharmaProfs"
                 target="_blank"
               >
                 <i className="pi pi-youtube"></i>
               </a>
               <a
                 className="pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
-                href="#"
+                href="https://www.facebook.com/people/Pharma-Profs/61561140721641"
                 target="_blank"
               >
                 <i className="pi pi-facebook"></i>
@@ -245,8 +245,7 @@ const Footer = () => {
 
             <div className="mb-4 font-normal text-sm">
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius et
-                officiis ipsa consequuntur iusto ab commodi aspernatur id
+                We are shaping the next generation of medical professionals.
               </p>
             </div>
           </div>

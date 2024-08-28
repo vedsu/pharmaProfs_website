@@ -14,7 +14,12 @@ const PageAttendeeDashboard = () => {
   const navigate = useNavigate();
 
   const [attendeeDashboardData, setAttendeeDashboardInfo] = useState([]);
-  const [attendeeDashboardHistory, setAttendeeDashboardHistory] = useState([]);
+  const [
+    attendeeDashboardHistoryPurchased,
+    setAttendeeDashboardHistoryPurchased,
+  ] = useState([]);
+  const [attendeeDashboardHistoryPending, setAttendeeDashboardHistoryPending] =
+    useState([]);
   const [
     attendeeDashboardRecommendations,
     setAttendeeDashboardRecommendations,
@@ -25,16 +30,38 @@ const PageAttendeeDashboard = () => {
       title: "History",
       description: (
         <React.Fragment>
-          {attendeeDashboardHistory?.length ? (
-            <div>
-              <div className="mb-2 text-left font-semibold text-sm">
-                <div>Purchased</div>
+          {attendeeDashboardHistoryPurchased?.length ? (
+            <div className="px-2 flex flex-col gap-5">
+              <div>
+                <div className="my-2 text-left font-semibold text-sm">
+                  <div className="px-2">Purchased</div>
+                </div>
+                <ul className="text-sm font-normal">
+                  {attendeeDashboardHistoryPurchased?.map(
+                    (historyPurchase: any, idx: number) => (
+                      <li key={idx + 1} className="my-2 px-2">
+                        <span>◈ {historyPurchase}</span>
+                      </li>
+                    )
+                  )}
+                </ul>
               </div>
-              <ul className="text-sm font-normal">
-                {attendeeDashboardHistory?.map((history: any) => (
-                  <li className="my-2 px-2">{history}</li>
-                ))}
-              </ul>
+              {attendeeDashboardHistoryPending?.length ? (
+                <div>
+                  <div className="my-2 text-left font-semibold text-sm">
+                    <div className="px-2">Pending</div>
+                  </div>
+                  <ul className="text-sm font-normal">
+                    {attendeeDashboardHistoryPending?.map(
+                      (historyPending: any, idx: number) => (
+                        <li key={idx + 1} className="my-2 px-2">
+                          <span>◈ {historyPending}</span>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              ) : null}
             </div>
           ) : (
             <div className="text-sm font-normal">
@@ -113,7 +140,8 @@ const PageAttendeeDashboard = () => {
         const res = await DashboardService.getUserDashboardInfo(path);
         if (validateGetRequest(res)) {
           setAttendeeDashboardInfo(res?.data?.[0]);
-          setAttendeeDashboardHistory(res?.data?.[1]);
+          setAttendeeDashboardHistoryPending(res?.data?.[1]);
+          setAttendeeDashboardHistoryPurchased(res?.data?.[2]);
         }
       } catch (error) {
         console.error(error);

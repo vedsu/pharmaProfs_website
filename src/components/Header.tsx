@@ -17,6 +17,21 @@ import ButtonCustom from "./ButtonCustom";
 
 const orderFormURL = getEnvVariableValues(ENV_VAR.VITE_ORDER_FORM_URL);
 
+const resourcesVideos = [
+  {
+    title: "Demo 1",
+    url: "https://vedsubrandwebsite.s3.amazonaws.com/demo/Human+Factors+Usability+Studies+following+ISO62366%2C+the+FDA+Guidance%2C+and+the+new+FDA+Draft+Guidance.mp4",
+  },
+  {
+    title: "Demo 2",
+    url: "https://vedsubrandwebsite.s3.amazonaws.com/demo/How+to+Write+SOPs+(Procedures)+for+Human+Error+Reduction+Prevention.mp4",
+  },
+  {
+    title: "Demo 3",
+    url: "https://vedsubrandwebsite.s3.amazonaws.com/demo/Data+Integrity+and+Privacy+Compliance+with+21+CFR+Part+11%2C+SaaSCloud%2C+EU+GDPR.mp4",
+  },
+];
+
 const Header: React.FC = () => {
   const navigate = useNavigate();
 
@@ -47,7 +62,12 @@ const Header: React.FC = () => {
     <header className="navbar-wrapper font-bold text-sm">
       <nav>
         <div className="flex items-center justify-between">
-          <div className="w-72 flex items-center justify-center">
+          <div
+            className="w-72 flex items-center justify-center cursor-pointer"
+            onClick={() => {
+              navigate(LINK_HOME);
+            }}
+          >
             <img className="" src={brandLogo} alt="logo" />
           </div>
 
@@ -227,11 +247,12 @@ const Header: React.FC = () => {
                             Learn more about PharmaProfs to get in touch
                           </h4>
                           <p className="text-sm font-normal">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit. Dignissimos totam quisquam commodi deleniti
-                            deserunt eveniet. Dolorem quia vitae, consequatur,
-                            mollitia recusandae molestiae iusto autem esse eos
-                            sint modi fugiat laborum.
+                            Pharma Profs aspires to be an indispensable resource
+                            worldwide. With a commitment to excellence, our
+                            company offers a platform for pharmaceutical
+                            professionals to enhance their expertise, advance
+                            their careers, and contribute meaningfully to
+                            patient care.
                           </p>
                         </div>
                         <div className="mega-menu-block stretched">
@@ -270,30 +291,74 @@ const Header: React.FC = () => {
                       <div className="content">
                         <div className="mega-menu-intro-block">
                           <h4 className="text-2xl">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit
+                            Unlock World-Class Resources with Pharma Profs
                           </h4>
                           <p className="text-sm font-normal">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit. Dignissimos totam quisquam commodi deleniti
-                            mollitia recusandae molestiae iusto autem esse eos
-                            sint modi fugiat laborum.
+                            We at Pharma Profs provide comprehensive solutions
+                            for the pharmaceutical industry domain and its
+                            sub-domains. Our services offer online FDA
+                            compliance training, GMP, QA,QC pharmaceutical
+                            regulatory, medical device, and R&D training
+                            encompassing various educational and support
+                            offerings.
                           </p>
                         </div>
                         <div className="mega-menu-block stretched">
-                          <div className="w-layout-grid mega-menu-grid _2-cols">
-                            <div />
-                            <ul className="mega-menu-links nav-company-list">
-                              <li>
-                                <a href={LINK_PAGE_ABOUT_US}>Resource 1</a>
-                              </li>
-                              <li>
-                                <a href={LINK_PAGE_FAQ}>Resource 2</a>
-                              </li>
-                              <li>
-                                <a href={"#"}>Resource 3</a>
-                              </li>
-                            </ul>
+                          <div className="w-layout-grid mega-menu-grid _3-cols">
+                            <div className="flex flex-col gap-3">
+                              <div className="font-bold">Demo Videos</div>
+                              <ul className="mega-menu-links resource-nav-links">
+                                {resourcesVideos?.map((resource, idx) => {
+                                  return (
+                                    <li key={idx + 1}>
+                                      <a
+                                        className="font-thin"
+                                        href={resource.url}
+                                        target="_blank"
+                                      >
+                                        {resource.title}
+                                      </a>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
+
+                            <div className="flex flex-col gap-3">
+                              <div className="font-bold">
+                                Publications (*coming soon)
+                              </div>
+                              <ul className="mega-menu-links resource-nav-links">
+                                <li>
+                                  <a className="font-thin" href={"#"}>
+                                    Newsletter
+                                  </a>
+                                </li>
+                                <li>
+                                  <a className="font-thin" href={"#"}>
+                                    E-book
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+
+                            <div className="flex flex-col gap-3">
+                              <div className="font-bold">
+                                Get Inspired (*coming soon)
+                              </div>
+                              <ul className="mega-menu-links resource-nav-links">
+                                <li>
+                                  <a className="font-thin" href={"#"}>
+                                    Blog
+                                  </a>
+                                </li>
+                                <li>
+                                  <a className="font-thin" href={"#"}>
+                                    Press
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -318,11 +383,19 @@ const Header: React.FC = () => {
                   className="nav-logout bg-primary-bg-obsidianBlack rounded-full"
                   label={"Logout"}
                   handleClickWithLoader={onLogout}
-                />
+                >
+                  <i className="mx-2 text-xs pi pi-sign-out"></i>
+                </ButtonCustom>
               </div>
             ) : (
-              <div className="nav-login-reg bg-primary-bg-obsidianBlack rounded-full">
-                <a href={LINK_PAGE_LOGIN_REG}>Login / Register</a>
+              <div>
+                <a
+                  href={LINK_PAGE_LOGIN_REG}
+                  className="nav-login-reg bg-primary-bg-obsidianBlack rounded-full"
+                >
+                  <span>Login / Register</span>
+                  <i className="mx-2 text-xs pi pi-sign-in"></i>
+                </a>
               </div>
             )}
           </div>

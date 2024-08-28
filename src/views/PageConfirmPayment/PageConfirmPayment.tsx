@@ -13,102 +13,165 @@ import { LINK_ATTENDEE_DASHBOARD, LINK_SPEAKER_DASHBOARD } from "../../routes";
 import OrderService from "../../services/OrderService";
 import { validatePostRequest } from "../../utils/commonUtils";
 
+const initialMessageData = {
+  generatedInvoiceNum: "",
+  generatedInvoiceDate: "",
+};
+
 const PageConfirmPayment = () => {
   const navigate = useNavigate();
 
-  const [cartData, setCartData] = useState<any>(null);
-  const [orderDoc, setOrderDoc] = useState<any>(null);
+  const [paymentSuccessMessageData, setPaymentSuccessMessageData] =
+    useState<any>({ ...initialMessageData });
 
   /*---------------------------Service Calls------------------------------*/
-  console.log(orderDoc);
-
   const createWebinarOrder = useCallback(async () => {
-    const currDate = new Date();
-    const sessionInfo = localStorage.getItem(LOCAL_STORAGE_ITEMS.SESSION_INFO);
-    if (sessionInfo) {
-      const parsedSessionInfo = JSON.parse(sessionInfo);
-      debugger;
+    const cartData = localStorage.getItem(LOCAL_STORAGE_ITEMS.CART_DATA);
+    const paymentSuccessInfo = localStorage.getItem(
+      LOCAL_STORAGE_ITEMS.PAYMENT_STATUS_SUCCESS
+    );
+    const purchaseSuccessMessage = localStorage.getItem(
+      LOCAL_STORAGE_ITEMS.PURCHASE_SUCCESS_MESSAGE
+    );
+
+    if (purchaseSuccessMessage) {
+      setPaymentSuccessMessageData(JSON.parse(purchaseSuccessMessage));
+    }
+
+    if (cartData && paymentSuccessInfo) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      let mm: any = today.getMonth() + 1;
+      let dd: any = today.getDate();
+
+      if (dd < 10) dd = "0" + dd;
+      if (mm < 10) mm = "0" + mm;
+
+      const formattedToday = dd + mm + yyyy;
+      const invoiceFormattedToday = dd + "/" + mm + "/" + yyyy;
+
+      const parsedCartInfo = JSON.parse(cartData);
+      const parsedPaymentSuccessInfo = JSON.parse(paymentSuccessInfo);
+
       const jsonPayload = {
-        customeremail: cartData?.email,
+        customeremail: parsedCartInfo?.email,
         paymentstatus: PAYMENT_STATUS.PURCHASED,
-        billingemail: cartData?.billingEmail,
+        billingemail: parsedPaymentSuccessInfo?.email,
         website: PHARMA_PROFS.WEBSITE,
-        orderamount: cartData?.cartTotal,
-        order_datetimezone: parsedSessionInfo?.date_time,
-        topic: cartData?.topic,
-        webinardate: cartData?.date,
-        sessionLive: cartData?.sessionLive,
-        priceLive: cartData?.priceLive,
-        sessionRecording: cartData?.sessionRecording,
-        priceRecording: cartData?.priceRecording,
-        sessionDigitalDownload: cartData?.sessionDigitalDownload,
-        priceDigitalDownload: cartData?.priceDigitalDownload,
-        sessionTranscript: cartData?.sessionTranscript,
-        priceTranscript: cartData?.priceTranscript,
-        customername: cartData?.customerName,
-        country: cartData?.country,
-        state: cartData?.state,
-        city: cartData?.city,
-        zipcode: cartData?.zipcode,
-        address: cartData?.address,
-        invoice_number: `${new Date().toDateString()}pharmaprofs${
-          cartData?.webinarUrl
-        }${Math.random().toString(36).substring(2)}`,
+        orderamount: parsedCartInfo?.cartTotal,
+        order_datetimezone: parsedPaymentSuccessInfo?.date_time,
+        topic: parsedCartInfo?.topic,
+        webinardate: parsedCartInfo?.date,
+        sessionLive: parsedCartInfo?.webinarSessionLive,
+        priceLive: parsedCartInfo?.priceLive,
+        sessionRecording: parsedCartInfo?.webinarSessionRecording,
+        priceRecording: parsedCartInfo?.priceRecording,
+        sessionDigitalDownload: parsedCartInfo?.webinarSessionDD,
+        priceDigitalDownload: parsedCartInfo?.priceDigitalDownload,
+        sessionTranscript: parsedCartInfo?.webinarSessionTranscript,
+        priceTranscript: parsedCartInfo?.priceTranscript,
+        customername: parsedCartInfo?.customerName,
+        country: parsedCartInfo?.country,
+        state: parsedCartInfo?.state,
+        city: parsedCartInfo?.city,
+        zipcode: parsedCartInfo?.zipcode,
+        address: parsedCartInfo?.address,
+        invoice_number: `${formattedToday}_PP_${
+          Math.random().toString(36).substring(2)?.toUpperCase() +
+          Math.random().toString(36).substring(2)?.toUpperCase()
+        }`,
       };
 
+      const templateMessageData = {
+        generatedInvoiceNum: jsonPayload.invoice_number,
+        generatedDate: invoiceFormattedToday,
+      };
+
+      localStorage.setItem(
+        LOCAL_STORAGE_ITEMS.PURCHASE_SUCCESS_MESSAGE,
+        JSON.stringify(templateMessageData)
+      );
+      setPaymentSuccessMessageData(templateMessageData);
+
       const formDataPayload = jsonToFormData(jsonPayload, FORM_DATA_OPTIONS);
-      debugger;
+
       try {
-        const res = await OrderService.createOrder(formDataPayload);
-        if (validatePostRequest(res)) {
-          const { data } = res;
-          debugger;
-          setOrderDoc(data?.document);
+        const response = await OrderService.createOrder(formDataPayload);
+        if (validatePostRequest(response)) {
+          localStorage.removeItem(LOCAL_STORAGE_ITEMS.PURCHASE_INFO);
+          localStorage.removeItem(LOCAL_STORAGE_ITEMS.CART_DATA);
+          localStorage.removeItem(LOCAL_STORAGE_ITEMS.PAYMENT_STATUS_SUCCESS);
         }
       } catch (error) {
         console.error(error);
       }
     }
-  }, [cartData]);
+  }, []);
 
   useEffect(() => {
     const onMount = async () => {
-      const cartData = localStorage.getItem(LOCAL_STORAGE_ITEMS.CART_DATA);
-      if (cartData) {
-        const parsedCartInfo = JSON.parse(cartData);
-        setCartData(parsedCartInfo);
-        await createWebinarOrder();
-      }
+      await createWebinarOrder();
     };
+
     onMount();
   }, [createWebinarOrder]);
 
   /*--------------------------Event Handlers-------------------------*/
 
-  const onDownloadInvoice = () => {};
-
-  const onCancel = () => {
-    if (cartData?.role?.attendee) navigate(`${LINK_ATTENDEE_DASHBOARD}`);
-    else if (cartData?.role?.speaker) navigate(`${LINK_SPEAKER_DASHBOARD}`);
+  const onGotoDashboard = () => {
+    const userInfo = localStorage.getItem(LOCAL_STORAGE_ITEMS.USERINFO);
+    if (userInfo) {
+      const parsedUserInfo = JSON.parse(userInfo);
+      localStorage.removeItem(LOCAL_STORAGE_ITEMS.PURCHASE_SUCCESS_MESSAGE);
+      if (parsedUserInfo?.role?.attendee)
+        navigate(`${LINK_ATTENDEE_DASHBOARD}`);
+      else if (parsedUserInfo?.role?.speaker)
+        navigate(`${LINK_SPEAKER_DASHBOARD}`);
+    }
   };
 
   return (
     <AuthValidator>
       <div className="page-margin">
-        <div className="w-full h-screen flex flex-col items-center justify-center">
+        <div className="py-5 w-full h-screen flex flex-col gap-2 items-center justify-start">
           <div className="text-2xl">
-            <h4>Payment Success !</h4>
+            <h4 className="font-bold text-xl text-primary-bg-teal">
+              Your payment was successful !
+            </h4>
           </div>
-          <div className="flex flex-wrap gap-10">
+
+          <div className="max-w-fit-content flex gap-5 font-semibold text-sm text-left leading-8">
+            <p>
+              Thank you for placing an order with PharmaProfs. We are pleased to
+              confirm the receipt of your order
+              <strong>{` #${
+                paymentSuccessMessageData?.generatedInvoiceNum ?? ""
+              } `}</strong>
+              ,
+              <strong>
+                {` dated ${paymentSuccessMessageData?.generatedDate ?? ""}`}.
+              </strong>
+              <br />
+              We appreciate the trust you have placed in us and aim to provide
+              you with the highest quality of service. If you have any questions
+              or need further assistance, please do not hesitate to contact our
+              customer service team at [customer service email address] or
+              [customer service phone number].
+              <br />
+              Thank you for choosing PharmaProfs.
+              <br />
+              We value your business and look forward to serving you again. A
+              confirmation email has been sent to your registered email.
+              <br />
+              Warm regards,
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-1 cursor-pointer">
             <ButtonCustom
-              className=""
-              label={"Download Invoice"}
-              handleClick={onDownloadInvoice}
-            />
-            <ButtonCustom
-              className=""
-              label={"Cancel"}
-              handleClick={onCancel}
+              className="px-4 py-2 border rounded-full bg-primary-bg-lightTeal text-white"
+              label={"Go to dashboard"}
+              handleClick={onGotoDashboard}
             />
           </div>
         </div>

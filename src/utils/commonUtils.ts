@@ -25,6 +25,26 @@ export const getLabel = (constant: string) => {
   return WEBSITE_LABEL[constant];
 };
 
+export const ddmmyy = (date: any) => {
+  if (date) {
+    date = new Date(date);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let dt = date.getDate();
+
+    if (dt < 10) {
+      dt = "0" + dt;
+    }
+    if (month < 10) {
+      month = "0" + month;
+    }
+
+    return dt + "/" + month + "/" + year;
+  } else {
+    return date;
+  }
+};
+
 export const validateGetRequest = (res: any) => {
   if (res?.status === 200) return true;
   else return false;

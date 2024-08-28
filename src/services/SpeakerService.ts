@@ -7,6 +7,11 @@ class SpeakerService extends BaseApiService {
     let path = DEFAULT_PATH;
     return this.makeGetRequest(path);
   };
+
+  getSpeakerById = (endPoint: any) => {
+    let path = DEFAULT_PATH + endPoint;
+    return this.makeGetRequest(path);
+  };
 }
 
 export default new SpeakerService();

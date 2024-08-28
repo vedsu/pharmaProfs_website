@@ -14,10 +14,10 @@ import {
 } from "../../utils/commonUtils";
 
 const initialPurchaseData = {
-  sessionLive: false,
-  sessionRecording: false,
-  sessionDD: false,
-  sessionTranscript: false,
+  webinarSessionLive: false,
+  webinarSessionRecording: false,
+  webinarSessionDD: false,
+  webinarSessionTranscript: false,
 };
 
 const PageWebinarInfo: React.FC = () => {
@@ -28,6 +28,7 @@ const PageWebinarInfo: React.FC = () => {
   const [webinarData, setWebinarData] = useState<any>(null);
   const [speakerData, setSpeakerData] = useState<any>(null);
   const [cartTotal, setCartTotal] = useState(0);
+  const [showCartEmptyMessage, setShowCartEmptyMessage] = useState(false);
   const [purchaseData, setPurchaseData] = useState(initialPurchaseData);
 
   /*---------------------------Service Calls------------------------------*/
@@ -67,10 +68,10 @@ const PageWebinarInfo: React.FC = () => {
 
   /*------------------------useEffect----------------------------*/
   useEffect(() => {
-    const init = async () => {
+    const onMount = async () => {
       await getWebinarDetails();
     };
-    init();
+    onMount();
   }, [getWebinarDetails]);
 
   /*--------------------------Event Handlers-----------------*/
@@ -101,11 +102,12 @@ const PageWebinarInfo: React.FC = () => {
 
     setCartTotal(amt);
     setPurchaseData({
-      sessionLive: Number(livePrice) ? true : false,
-      sessionRecording: Number(recordingPrice) ? true : false,
-      sessionDD: Number(ddPrice) ? true : false,
-      sessionTranscript: Number(transcriptPrice) ? true : false,
+      webinarSessionLive: Number(livePrice) ? true : false,
+      webinarSessionRecording: Number(recordingPrice) ? true : false,
+      webinarSessionDD: Number(ddPrice) ? true : false,
+      webinarSessionTranscript: Number(transcriptPrice) ? true : false,
     });
+    setShowCartEmptyMessage(false);
   };
 
   const onBuyNow = async () => {
@@ -122,12 +124,19 @@ const PageWebinarInfo: React.FC = () => {
         })
       );
     } else if (isUserLoggedIn && cartTotal === 0) {
-      //
+      setShowCartEmptyMessage(true);
     } else {
       sessionStorage.setItem(
         SESSION_STORAGE_ITEMS.REG_BANNER,
         JSON.stringify({
           display: true,
+        })
+      );
+      localStorage.setItem(
+        LOCAL_STORAGE_ITEMS.CARD_CONTINUE_PURCHASE,
+        JSON.stringify({
+          display: true,
+          ...webinarData,
         })
       );
       navigate(LINK_PAGE_LOGIN_REG, {
@@ -146,13 +155,13 @@ const PageWebinarInfo: React.FC = () => {
         <div className="text-left font-semibold">
           <div>{webinarData?.topic ?? "N.A."}</div>
         </div>
-        <div className="text-left">
+        <div className="text-left text-sm">
           <span className="font-semibold">{"Category : "}</span>
           <span>
             {getInitialLetterUpperCase(webinarData?.category) ?? "N.A."}
           </span>
         </div>
-        <div className="text-left">
+        <div className="text-left text-sm">
           <span className="font-semibold">{"Duration : "}</span>
           <span>
             {`${
@@ -160,26 +169,26 @@ const PageWebinarInfo: React.FC = () => {
             } minutes`}
           </span>
         </div>
-        <div className="text-left">
+        <div className="text-left text-sm">
           <span className="font-semibold">{"Industry : "}</span>
           <span>
             {`${getInitialLetterUpperCase(webinarData?.industry) ?? "N.A."}`}
           </span>
         </div>
-        <div className="text-left">
+        <div className="text-left text-sm">
           <span className="font-semibold">{"Date : "}</span>
           <span>
             {new Date(webinarData?.date).toLocaleDateString() ?? "N.A."}
           </span>
         </div>
-        <div className="text-left">
+        <div className="text-left text-sm">
           <span className="font-semibold">{"Time : "}</span>
           <span>
             {`${getInitialLetterUpperCase(webinarData?.time) ?? "N.A."}`}
           </span>
         </div>
-        <div className="text-left">
-          <span className="font-semibold">{"TimeZone : "}</span>
+        <div className="text-left text-sm">
+          <span className="font-semibold">{"Timezone : "}</span>
           <span>{webinarData?.timeZone ?? "N.A."}</span>
         </div>
       </div>
@@ -305,14 +314,22 @@ const PageWebinarInfo: React.FC = () => {
             {`$ ${cartTotal}`}
           </span>
         </div>
+
+        {showCartEmptyMessage ? (
+          <div className="my-1 px-6">
+            <small className="text-sm text-primary-error">
+              {"Webinar session not selected."}
+            </small>
+          </div>
+        ) : null}
       </div>
     );
   };
 
   /*-------------------Main Render------------------------- */
   return (
-    <div className="my-10 border border-primary-light-900 p-5 webinarInfo-container">
-      <div className="w-full flex flex-col gap-5">
+    <section className="my-10 border border-primary-light-900 p-5 webinarInfo-container">
+      <div className="w-full flex flex-col items-center justify-center gap-5">
         {isLoadingWebinar ? (
           <div className="h-[400px] flex items-center justify-center">
             <span>
@@ -321,7 +338,7 @@ const PageWebinarInfo: React.FC = () => {
           </div>
         ) : (
           <React.Fragment>
-            <div className="flex flex-wrap items-start justify-between">
+            <div className="w-full flex flex-wrap items-start justify-between">
               <div className="w-[50%]">
                 {renderWebinarInfo()}
 
@@ -340,18 +357,18 @@ const PageWebinarInfo: React.FC = () => {
               </div>
             </div>
 
-            <div className="border border-primary-light-900 py-5 bg-primary-bg-mintCream font-semibold text-sm text-center">
+            <div className="w-full border border-primary-light-900 py-5 bg-primary-bg-mintCream font-semibold text-sm text-center">
               {"Overview"}
             </div>
 
-            <div className="text-sm leading-6">
+            <div className="w-full text-sm leading-6">
               <h4>{"Description"}</h4>
               <p>{webinarData?.description}</p>
             </div>
           </React.Fragment>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

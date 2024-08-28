@@ -5,6 +5,7 @@ interface IAccordionCustomProps {
   accordionClassName?: string;
   accordionTabClassName?: string;
   accordionHeaderClassName?: string;
+  activeIndex?: number;
 }
 
 const AccordionCustom = (props: IAccordionCustomProps) => {
@@ -13,11 +14,15 @@ const AccordionCustom = (props: IAccordionCustomProps) => {
     accordionClassName,
     accordionTabClassName,
     accordionHeaderClassName,
+    activeIndex,
   } = props;
 
   return (
     <div className="accordion-wrapper w-full">
-      <Accordion className={`${accordionClassName}`}>
+      <Accordion
+        className={`${accordionClassName}`}
+        activeIndex={activeIndex ?? undefined}
+      >
         {accordionData.map((accordionInfo: any) => {
           return (
             <AccordionTab

@@ -186,13 +186,20 @@ const PageWebinarList: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-start gap-2 text-primary-pSlateGray text-sm">
+                <div>
+                  <span className="font-bold">Date :</span>
+                  {webinar?.date ?? "-"}
+                </div>
+                <span>{"|"}</span>
+                <div>
+                  Time : {webinar?.time ?? "-"} {webinar?.timeZone ?? "-"}
+                </div>
+                <span>{"|"}</span>
                 <div>Duration : {webinar?.duration ?? "-"} minutes</div>
                 <span>{"|"}</span>
                 <div>{getInitialLetterUpperCase(webinar?.industry ?? "-")}</div>
                 <span>{"|"}</span>
-                <div>TimeZone : {webinar?.duration ?? "-"} minutes</div>
-                <span>{"|"}</span>
-                <div>{getInitialLetterUpperCase(webinar?.industry ?? "-")}</div>
+                <div>{getInitialLetterUpperCase(webinar?.category ?? "-")}</div>
               </div>
             </div>
           );
@@ -203,7 +210,7 @@ const PageWebinarList: React.FC = () => {
 
   const renderGridView = (): ReactNode => {
     return (
-      <div className="w-full my-5 grid grid-cols-4 gap-5">
+      <div className="w-full my-5 grid grid-cols-3 gap-5">
         {filteredWebinarsList.map((webinar: any) => {
           return (
             <div

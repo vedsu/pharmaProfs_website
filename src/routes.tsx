@@ -12,10 +12,10 @@ import PageFAQ from "./views/PageFAQ";
 import PageForgotPassword from "./views/PageForgotPassword";
 import PageHome from "./views/PageHome";
 import PagePrivacyPolicy from "./views/PagePrivacyPolicy";
-import PageRefundCancellation from "./views/PageRefundCancellation/";
-import { PageResources } from "./views/PageResources";
+import PageRefundCancellation from "./views/PageRefundCancellation";
 import PageSpeakerDashboard from "./views/PageSpeakerDashboard";
-import PageSpeakers from "./views/PageSpeakers/";
+import PageSpeakerInfo from "./views/PageSpeakerInfo";
+import PageSpeakers from "./views/PageSpeakers";
 import PageTermsAndConditions from "./views/PageTermsAndConditions";
 import PageUnauthorized from "./views/PageUnauthorized";
 import PageWebinarInfo from "./views/PageWebinarInfo";
@@ -23,7 +23,6 @@ import PageWebinarList from "./views/PageWebinarList";
 
 export const LINK_HOME = "/";
 export const LINK_PAGE_WEBINAR_LISTING = "/webinars";
-export const LINK_PAGE_RESOURCES = "/resources";
 export const LINK_PAGE_LOGIN_REG = "/login-reg";
 export const LINK_PAGE_SPEAKERS = "/speakers";
 export const LINK_PAGE_ABOUT_US = "/about-us";
@@ -66,8 +65,8 @@ const ppWebsiteChildrenRoutes = [
     element: <PageSpeakers />,
   },
   {
-    path: LINK_PAGE_RESOURCES,
-    element: <PageResources />,
+    path: `${LINK_PAGE_SPEAKERS}/:speakerId`,
+    element: <PageSpeakerInfo />,
   },
   {
     path: LINK_PAGE_LOGIN_REG,

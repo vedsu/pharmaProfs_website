@@ -4,24 +4,28 @@ import { useState } from "react";
 interface IButtonProps extends ButtonProps {
   className?: string;
   containerClassName?: string;
+  labelClassName?: string;
   loaderIconClassName?: string;
   label: string;
+  type?: any;
+  isLoading?: boolean;
   handleClick?: any;
   handleClickWithLoader?: any;
   callbackSuccess?: any;
-  type?: any;
 }
 
 const ButtonCustom = (props: IButtonProps) => {
   const {
     className,
     containerClassName,
+    labelClassName,
     loaderIconClassName,
     label,
+    isLoading,
+    type,
     handleClick,
     handleClickWithLoader,
     callbackSuccess,
-    type,
     ...nativeProps
   } = props;
 
@@ -54,14 +58,17 @@ const ButtonCustom = (props: IButtonProps) => {
         type={type}
         {...nativeProps}
       >
-        <span>{label}</span>
-        {showLoader ? (
+        <span className={`${labelClassName ?? ""}`}>{label}</span>
+
+        {showLoader || isLoading ? (
           <i
             className={`i-focus pi pi-spin pi-spinner text-xs ${
               loaderIconClassName ?? ""
             }`}
           ></i>
-        ) : null}
+        ) : (
+          <>{props?.children}</>
+        )}
       </Button>
     </div>
   );
