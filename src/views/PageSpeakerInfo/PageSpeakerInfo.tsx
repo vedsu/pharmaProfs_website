@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ErrorBoundary from "../../components/ErrorBoundary";
+import InterfaceError from "../../components/InterfaceError";
 import SpeakerService from "../../services/SpeakerService";
 import {
   getInitialLetterUpperCase,
@@ -83,9 +83,7 @@ const PageSpeakerInfo: React.FC = () => {
                   </div>
                 </React.Fragment>
               ) : (
-                <div className="h-screen">
-                  <ErrorBoundary />
-                </div>
+                <InterfaceError />
               )}
             </>
           )}

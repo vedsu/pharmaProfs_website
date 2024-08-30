@@ -2,7 +2,7 @@ import React from "react";
 
 const PageAboutUs: React.FC = () => {
   return (
-    <div className="page-margin">
+    <div className="page-margin min-h-[50vh]">
       <section className="py-5 flex flex-col items-center justify-center gap-5">
         <div className="flex flex-col gap-5 text-sm">
           <h4 className="font-semibold text-2xl text-primary-pTextTeal ">

@@ -37,7 +37,7 @@ const initialLoginFormData = {
   },
 };
 
-export const PageLoginOrRegister = () => {
+const PageLoginOrRegister = () => {
   const navigate = useNavigate();
 
   const [loginFormData, setLoginFormData] = useState(initialLoginFormData);
@@ -353,3 +353,5 @@ export const PageLoginOrRegister = () => {
     </div>
   );
 };
+
+export default PageLoginOrRegister;

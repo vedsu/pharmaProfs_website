@@ -89,7 +89,7 @@ const PageSpeakers: React.FC = () => {
   /*-------------------------Main Render-----------------------------------*/
 
   return (
-    <div className="page-margin p-5">
+    <div className="page-margin p-5 min-h-[50vh]">
       {isLoading ? (
         <div className="h-screen flex items-center justify-center">
           <i className="pi pi-spinner text-4xl animate-spin text-primary-bg-teal"></i>

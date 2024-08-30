@@ -1,25 +1,8 @@
+/* eslint-disable react-refresh/only-export-components */
+import { lazy, Suspense } from "react";
 import { RouteObject } from "react-router-dom";
-import ErrorBoundary from "./components/ErrorBoundary";
-import PPWebsite from "./layout/PPWebsite";
-import { PageLoginOrRegister } from "./views/auth/PageLoginOrRegister";
-import PageAboutUs from "./views/PageAboutUs";
-import PageAttendeeDashboard from "./views/PageAttendeeDashboard";
-import PageCart from "./views/PageCart";
-import PageCheckout from "./views/PageCheckout";
-import PageConfirmPayment from "./views/PageConfirmPayment";
-import PageContactUs from "./views/PageContactUs";
-import PageFAQ from "./views/PageFAQ";
-import PageForgotPassword from "./views/PageForgotPassword";
-import PageHome from "./views/PageHome";
-import PagePrivacyPolicy from "./views/PagePrivacyPolicy";
-import PageRefundCancellation from "./views/PageRefundCancellation";
-import PageSpeakerDashboard from "./views/PageSpeakerDashboard";
-import PageSpeakerInfo from "./views/PageSpeakerInfo";
-import PageSpeakers from "./views/PageSpeakers";
-import PageTermsAndConditions from "./views/PageTermsAndConditions";
-import PageUnauthorized from "./views/PageUnauthorized";
-import PageWebinarInfo from "./views/PageWebinarInfo";
-import PageWebinarList from "./views/PageWebinarList";
+import InterfaceError from "./components/InterfaceError";
+import InterfaceLoader from "./components/InterfaceLoader";
 
 export const LINK_HOME = "/";
 export const LINK_PAGE_WEBINAR_LISTING = "/webinars";
@@ -46,6 +29,37 @@ export const LINK_SPEAKER_DASHBOARD = LINK_BASE_DASHBOARD + "/speaker";
 /*---------------------Unauthorized Page-------------------------*/
 export const LINK_UNAUTHORIZED_DASHBOARD =
   LINK_BASE_DASHBOARD + "/unauthorized";
+
+/*-----------------Code Splitting using Dynamic Imports----------- */
+const PPWebsite = lazy(() => import("./layout/PPWebsite"));
+const PageLoginOrRegister = lazy(
+  () => import("./views/auth/PageLoginOrRegister")
+);
+
+const PageHome = lazy(() => import("./views/PageHome"));
+const PageWebinarList = lazy(() => import("./views/PageWebinarList"));
+const PageWebinarInfo = lazy(() => import("./views/PageWebinarInfo"));
+const PageSpeakers = lazy(() => import("./views/PageSpeakers"));
+const PageSpeakerInfo = lazy(() => import("./views/PageSpeakerInfo"));
+const PageAboutUs = lazy(() => import("./views/PageAboutUs"));
+const PageFAQ = lazy(() => import("./views/PageFAQ"));
+const PageContactUs = lazy(() => import("./views/PageContactUs"));
+const PagePrivacyPolicy = lazy(() => import("./views/PagePrivacyPolicy"));
+const PageTermsAndConditions = lazy(
+  () => import("./views/PageTermsAndConditions")
+);
+const PageRefundCancellation = lazy(
+  () => import("./views/PageRefundCancellation")
+);
+const PageSpeakerDashboard = lazy(() => import("./views/PageSpeakerDashboard"));
+const PageAttendeeDashboard = lazy(
+  () => import("./views/PageAttendeeDashboard")
+);
+const PageCart = lazy(() => import("./views/PageCart"));
+const PageCheckout = lazy(() => import("./views/PageCheckout"));
+const PageConfirmPayment = lazy(() => import("./views/PageConfirmPayment"));
+const PageForgotPassword = lazy(() => import("./views/PageForgotPassword"));
+const PageUnauthorized = lazy(() => import("./views/PageUnauthorized"));
 
 const ppWebsiteChildrenRoutes = [
   {
@@ -117,21 +131,25 @@ const ppWebsiteChildrenRoutes = [
     element: <PageConfirmPayment />,
   },
   {
-    path: LINK_UNAUTHORIZED_DASHBOARD,
-    element: <PageUnauthorized />,
-  },
-  {
     path: LINK_PAGE_FORGOT_PASSWORD,
     element: <PageForgotPassword />,
+  },
+  {
+    path: LINK_UNAUTHORIZED_DASHBOARD,
+    element: <PageUnauthorized />,
   },
 ];
 
 const ppWebsiteRoutes: RouteObject[] = [
   {
     path: LINK_HOME,
-    element: <PPWebsite />,
+    element: (
+      <Suspense fallback={<InterfaceLoader />}>
+        <PPWebsite />
+      </Suspense>
+    ),
     children: ppWebsiteChildrenRoutes,
-    errorElement: <ErrorBoundary />,
+    errorElement: <InterfaceError />,
   },
 ];
 
