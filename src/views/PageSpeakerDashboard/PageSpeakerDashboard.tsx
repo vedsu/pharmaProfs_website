@@ -6,19 +6,52 @@ import { validateGetRequest } from "../../utils/commonUtils";
 
 const PageSpeakerDashboard = () => {
   const [speakerDashboardData, setSpeakerDashboardInfo] = useState([]);
-  const [speakerDashboardHistory, setSpeakerDashboardHistory] = useState([]);
+
+  const [
+    speakerDashboardHistoryPurchased,
+    setSpeakerDashboardHistoryPurchased,
+  ] = useState([]);
+  const [speakerDashboardHistoryPending, setSpeakerDashboardHistoryPending] =
+    useState([]);
 
   const accordionTemplateData = [
     {
       title: "History",
       description: (
         <React.Fragment>
-          {speakerDashboardHistory?.length ? (
-            <ul className="text-sm font-normal">
-              {speakerDashboardHistory?.map((history: any) => (
-                <li className="my-2 px-2">{history}</li>
-              ))}
-            </ul>
+          {speakerDashboardHistoryPurchased?.length ? (
+            <div className="px-2 flex flex-col gap-5">
+              <div>
+                <div className="my-2 text-left font-semibold text-sm">
+                  <div className="px-2">Purchased</div>
+                </div>
+                <ul className="text-sm font-normal">
+                  {speakerDashboardHistoryPurchased?.map(
+                    (historyPurchase: any, idx: number) => (
+                      <li key={idx + 1} className="my-2 px-2">
+                        <span>◈ {historyPurchase}</span>
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+              {speakerDashboardHistoryPending?.length ? (
+                <div>
+                  <div className="my-2 text-left font-semibold text-sm">
+                    <div className="px-2">Pending</div>
+                  </div>
+                  <ul className="text-sm font-normal">
+                    {speakerDashboardHistoryPending?.map(
+                      (historyPending: any, idx: number) => (
+                        <li key={idx + 1} className="my-2 px-2">
+                          <span>◈ {historyPending}</span>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
           ) : (
             <div className="text-sm font-normal">
               <p className="my-2 px-2 text-center">Nothing to show here.</p>
@@ -30,10 +63,10 @@ const PageSpeakerDashboard = () => {
   ];
 
   useEffect(() => {
-    const init = async () => {
-      getSpeakersDashBoardInfo();
+    const onMount = async () => {
+      await getSpeakersDashBoardInfo();
     };
-    init();
+    onMount();
   }, []);
 
   /*--------------------Service Calls----------------- */
@@ -50,7 +83,8 @@ const PageSpeakerDashboard = () => {
 
         if (validateGetRequest(res)) {
           setSpeakerDashboardInfo(res?.data?.[0]);
-          setSpeakerDashboardHistory(res?.data?.[1]);
+          setSpeakerDashboardHistoryPending(res?.data?.[1]);
+          setSpeakerDashboardHistoryPurchased(res?.data?.[2]);
         }
       } catch (error) {
         console.error(error);

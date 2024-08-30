@@ -10,6 +10,7 @@ import { LINK_PAGE_CART, LINK_PAGE_LOGIN_REG } from "../../routes";
 import WebinarService from "../../services/WebinarService";
 import {
   getInitialLetterUpperCase,
+  monDayYear,
   validateGetRequest,
 } from "../../utils/commonUtils";
 
@@ -156,9 +157,27 @@ const PageWebinarInfo: React.FC = () => {
           <div>{webinarData?.topic ?? "N.A."}</div>
         </div>
         <div className="text-left text-sm">
+          <span className="font-semibold">{"Industry : "}</span>
+          <span>
+            {`${getInitialLetterUpperCase(webinarData?.industry) ?? "N.A."}`}
+          </span>
+        </div>
+        <div className="text-left text-sm">
           <span className="font-semibold">{"Category : "}</span>
           <span>
             {getInitialLetterUpperCase(webinarData?.category) ?? "N.A."}
+          </span>
+        </div>
+        <div className="text-left text-sm">
+          <span className="font-semibold">{"Date : "}</span>
+          <span>{monDayYear(webinarData?.date) ?? "N.A."}</span>
+        </div>
+        <div className="text-left text-sm">
+          <span className="font-semibold">{"Time : "}</span>
+          <span>
+            {`${getInitialLetterUpperCase(webinarData?.time) ?? "N.A."} ${
+              webinarData?.timeZone ?? "N.A."
+            }`}
           </span>
         </div>
         <div className="text-left text-sm">
@@ -168,28 +187,6 @@ const PageWebinarInfo: React.FC = () => {
               getInitialLetterUpperCase(webinarData?.duration) ?? "N.A."
             } minutes`}
           </span>
-        </div>
-        <div className="text-left text-sm">
-          <span className="font-semibold">{"Industry : "}</span>
-          <span>
-            {`${getInitialLetterUpperCase(webinarData?.industry) ?? "N.A."}`}
-          </span>
-        </div>
-        <div className="text-left text-sm">
-          <span className="font-semibold">{"Date : "}</span>
-          <span>
-            {new Date(webinarData?.date).toLocaleDateString() ?? "N.A."}
-          </span>
-        </div>
-        <div className="text-left text-sm">
-          <span className="font-semibold">{"Time : "}</span>
-          <span>
-            {`${getInitialLetterUpperCase(webinarData?.time) ?? "N.A."}`}
-          </span>
-        </div>
-        <div className="text-left text-sm">
-          <span className="font-semibold">{"Timezone : "}</span>
-          <span>{webinarData?.timeZone ?? "N.A."}</span>
         </div>
       </div>
     );

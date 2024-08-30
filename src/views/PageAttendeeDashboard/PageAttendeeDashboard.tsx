@@ -7,6 +7,7 @@ import DashboardService from "../../services/DashboardService";
 import WebinarService from "../../services/WebinarService";
 import {
   getInitialLetterUpperCase,
+  monDayYear,
   validateGetRequest,
 } from "../../utils/commonUtils";
 
@@ -24,6 +25,7 @@ const PageAttendeeDashboard = () => {
     attendeeDashboardRecommendations,
     setAttendeeDashboardRecommendations,
   ] = useState([]);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(true);
 
   const accordionTemplateData = [
     {
@@ -75,44 +77,57 @@ const PageAttendeeDashboard = () => {
       title: "Recommendations",
       description: (
         <React.Fragment>
-          {attendeeDashboardRecommendations?.length ? (
-            <div className="mb-2 text-sm font-normal cursor-pointer">
-              {attendeeDashboardRecommendations?.map((recommendation: any) => (
-                <div
-                  key={recommendation?.webinarUrl}
-                  className="my-2 p-2 border-2 border-primary-light-900 rounded-lg flex flex-col gap-1 text-sm"
-                  onClick={() =>
-                    onClickRecommendation(recommendation?.webinarUrl)
-                  }
-                >
-                  <div>
-                    <span className="font-bold">{recommendation?.topic}</span>
-                  </div>
-                  <div>
-                    <span className="font-bold">{"Industry : "}</span>
-                    <span>
-                      {getInitialLetterUpperCase(recommendation?.industry)}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-bold">
-                      {"Duration : "} {`${recommendation?.duration}`}
-                    </span>
-                    <span className="mx-1">minutes</span>
-                  </div>
-                  <div>
-                    <span className="font-bold">{"Date : "}</span>
-                    <span>
-                      {new Date(recommendation?.date)?.toLocaleDateString()}
-                    </span>
-                  </div>
-                </div>
-              ))}
+          {loadingRecommendations ? (
+            <div className="h-32 flex items-center justify-center">
+              <i className="pi pi-spin pi-spinner text-base"></i>
             </div>
           ) : (
-            <div className="text-sm font-normal">
-              <p className="my-2 px-2 text-center">Nothing to show here.</p>
-            </div>
+            <React.Fragment>
+              {attendeeDashboardRecommendations?.length ? (
+                <div className="mb-2 text-sm font-normal cursor-pointer">
+                  {attendeeDashboardRecommendations?.map(
+                    (recommendation: any) => (
+                      <div
+                        key={recommendation?.webinarUrl}
+                        onClick={() =>
+                          onClickRecommendation(recommendation?.webinarUrl)
+                        }
+                      >
+                        <div className="card-scale card-scale-bg my-2 p-4 border-2 border-primary-light-900 rounded-lg flex flex-col gap-1 text-sm">
+                          <div>
+                            <span className="font-bold">
+                              {recommendation?.topic}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="font-bold">{"Industry : "}</span>
+                            <span>
+                              {getInitialLetterUpperCase(
+                                recommendation?.industry
+                              )}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="font-bold">
+                              {"Duration : "} {`${recommendation?.duration}`}
+                            </span>
+                            <span className="mx-1">minutes</span>
+                          </div>
+                          <div>
+                            <span className="font-bold">{"Date : "}</span>
+                            <span>{monDayYear(recommendation?.date)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              ) : (
+                <div className="text-sm font-normal">
+                  <p className="my-2 px-2 text-center">Nothing to show here.</p>
+                </div>
+              )}
+            </React.Fragment>
           )}
         </React.Fragment>
       ),
@@ -120,11 +135,11 @@ const PageAttendeeDashboard = () => {
   ];
 
   useEffect(() => {
-    const init = async () => {
+    const onMount = async () => {
       await getAttendeeDashBoardInfo();
       await getAllWebinars();
     };
-    init();
+    onMount();
   }, []);
 
   /*--------------------Service Calls----------------- */
@@ -157,7 +172,7 @@ const PageAttendeeDashboard = () => {
         const upcomingWebinarsPharma = res?.data?.[0]?.filter(
           (webinar: any) =>
             webinar?.website === PHARMA_PROFS.WEBSITE &&
-            new Date(webinar?.date) < currDate
+            new Date(webinar?.date) > currDate
         );
 
         const recommendations = upcomingWebinarsPharma.map((webinar: any) => {
@@ -170,6 +185,7 @@ const PageAttendeeDashboard = () => {
           };
         });
         setAttendeeDashboardRecommendations(recommendations);
+        setLoadingRecommendations(false);
       }
     } catch (error) {
       console.error(error);

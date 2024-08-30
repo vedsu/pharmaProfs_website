@@ -12,6 +12,7 @@ import { LINK_PAGE_WEBINAR_LISTING } from "../routes";
 import WebinarService from "../services/WebinarService";
 import {
   getInitialLetterUpperCase,
+  monDayYear,
   validateGetRequest,
 } from "../utils/commonUtils";
 
@@ -172,34 +173,61 @@ const PageWebinarList: React.FC = () => {
           return (
             <div
               key={Math.random().toString(36).substring(2)}
-              className={
-                "p-3 flex flex-col gap-3 border border-primary-light-900 cursor-pointer"
-              }
               onClick={() => {
                 navigate(
                   LINK_PAGE_WEBINAR_LISTING + "/" + webinar?.webinar_url
                 );
               }}
             >
-              <div className="text-left font-semibold">
-                <div>{webinar?.topic ?? "-"}</div>
-              </div>
+              <div
+                className={
+                  "card-scale card-scale-bg p-3 flex flex-col gap-3 border border-primary-light-900 cursor-pointer"
+                }
+              >
+                <div className="text-left font-semibold">
+                  <div>{webinar?.topic ?? "N.A."}</div>
+                </div>
 
-              <div className="flex items-center justify-start gap-2 text-primary-pSlateGray text-sm">
-                <div>
-                  <span className="font-bold">Date :</span>
-                  {webinar?.date ?? "-"}
+                <div className="flex flex-wrap items-center justify-start gap-2 text-primary-pSlateGray text-sm">
+                  <div>
+                    <span className="font-bold mr-1">Date :</span>
+                    <span>{monDayYear(webinar?.date) ?? "N.A"}</span>
+                  </div>
+                  <span>{"|"}</span>
+
+                  {webinarSession !== WEBINAR_SESSIONS.RECORDING && (
+                    <React.Fragment>
+                      <div>
+                        <span className="font-bold mx-1">Time :</span>
+                        <span>
+                          {webinar?.time ?? "N.A"} {webinar?.timeZone ?? "N.A"}
+                        </span>
+                      </div>
+                      <span>{"|"}</span>
+                    </React.Fragment>
+                  )}
+
+                  <div>
+                    <span className="font-bold mx-1">Duration :</span>
+                    <span>{webinar?.duration ?? "N.A"} minutes</span>
+                  </div>
+                  <span>{"|"}</span>
+
+                  <div>
+                    <span className="font-bold mx-1">Industry :</span>
+                    <span>
+                      {getInitialLetterUpperCase(webinar?.industry ?? "N.A")}
+                    </span>
+                  </div>
+                  <span>{"|"}</span>
+
+                  <div>
+                    <span className="font-bold mx-1">Category :</span>
+                    <span>
+                      {getInitialLetterUpperCase(webinar?.category ?? "N.A")}
+                    </span>
+                  </div>
                 </div>
-                <span>{"|"}</span>
-                <div>
-                  Time : {webinar?.time ?? "-"} {webinar?.timeZone ?? "-"}
-                </div>
-                <span>{"|"}</span>
-                <div>Duration : {webinar?.duration ?? "-"} minutes</div>
-                <span>{"|"}</span>
-                <div>{getInitialLetterUpperCase(webinar?.industry ?? "-")}</div>
-                <span>{"|"}</span>
-                <div>{getInitialLetterUpperCase(webinar?.category ?? "-")}</div>
               </div>
             </div>
           );
@@ -215,24 +243,52 @@ const PageWebinarList: React.FC = () => {
           return (
             <div
               key={Math.random().toString(36).substring(2)}
-              className={`col-span-1 p-3 border border-primary-light-900 flex flex-col items-start justify-between cursor-pointer`}
               onClick={() => {
                 navigate(
                   LINK_PAGE_WEBINAR_LISTING + "/" + webinar?.webinar_url
                 );
               }}
             >
-              <div className="text-left font-semibold">
-                <div>{webinar.topic ?? "-"}</div>
-              </div>
-
-              <div className="flex flex-col text-primary-pSlateGray">
-                <div className="text-left text-sm">
-                  Duration : {webinar?.duration ?? "-"} minutes
+              <div
+                className={`card-scale card-scale-bg col-span-1 p-3 border border-primary-light-900 flex flex-col items-start justify-between cursor-pointer`}
+              >
+                <div className="text-left font-semibold">
+                  <div>{webinar.topic ?? "N.A."}</div>
                 </div>
 
-                <div className="text-left text-sm">
-                  {getInitialLetterUpperCase(webinar?.industry ?? "-")}
+                <div className="mt-2 flex flex-col gap-1 text-primary-pSlateGray text-sm">
+                  <div>
+                    <span className="font-bold mr-1">Date :</span>
+                    <span>{monDayYear(webinar?.date) ?? "N.A"}</span>
+                  </div>
+
+                  {webinarSession !== WEBINAR_SESSIONS.RECORDING && (
+                    <div>
+                      <span className="font-bold mr-1">Time :</span>
+                      <span>
+                        {webinar?.time ?? "N.A"} {webinar?.timeZone ?? "N.A"}
+                      </span>
+                    </div>
+                  )}
+
+                  <div>
+                    <span className="font-bold mr-1">Duration :</span>
+                    <span>{webinar?.duration ?? "N.A"} minutes</span>
+                  </div>
+
+                  <div>
+                    <span className="font-bold mr-1">Industry :</span>
+                    <span>
+                      {getInitialLetterUpperCase(webinar?.industry ?? "N.A")}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="font-bold mr-1">Category :</span>
+                    <span>
+                      {getInitialLetterUpperCase(webinar?.category ?? "N.A")}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

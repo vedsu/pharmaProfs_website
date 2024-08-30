@@ -51,35 +51,36 @@ const PageSpeakers: React.FC = () => {
     return (
       <div
         key={itemListIdx}
-        className="col-span-1 border border-primary-light-900 rounded-lg p-2 flex flex-col items-center justify-center gap-2 cursor-pointer hover:opacity-80"
         onClick={() => {
           onClickSpeakerCard(speakerInfo);
         }}
       >
-        <div className="flex items-center justify-center text-xs">
-          <img
-            className="w-[300px] h-[220px] object-fill rounded-lg"
-            src={speakerInfo?.photo}
-            alt="speaker's image"
-          />
-        </div>
-        <div className="w-[300px] font-semibold text-sm text-ellipsis overflow-hidden">
-          <span className="py-2">{`Name :`}</span>
-          <span
-            className="px-1 py-2 font-medium"
-            title={getInitialLetterUpperCase(speakerInfo?.name) ?? "N.A."}
-          >
-            {getInitialLetterUpperCase(speakerInfo?.name) ?? "N.A."}
-          </span>
-        </div>
-        <div className="w-[300px] font-semibold text-sm text-ellipsis overflow-hidden">
-          <span className="py-2">{`Industry :`}</span>
-          <span
-            className="px-1 py-2 font-medium"
-            title={getInitialLetterUpperCase(speakerInfo?.industry) ?? "N.A."}
-          >
-            {getInitialLetterUpperCase(speakerInfo?.industry) ?? "N.A."}
-          </span>
+        <div className="card-scale col-span-1 border border-primary-light-900 rounded-lg p-2 flex flex-col items-center justify-center gap-2 cursor-pointer hover:opacity-80">
+          <div className="flex items-center justify-center text-xs">
+            <img
+              className="w-[300px] h-[220px] bg-slate-50 object-contain rounded-lg"
+              src={speakerInfo?.photo}
+              alt="speaker's image"
+            />
+          </div>
+          <div className="w-[300px] font-semibold text-sm text-ellipsis overflow-hidden">
+            <span className="py-2">{`Name :`}</span>
+            <span
+              className="px-1 py-2 font-medium"
+              title={getInitialLetterUpperCase(speakerInfo?.name) ?? "N.A."}
+            >
+              {getInitialLetterUpperCase(speakerInfo?.name) ?? "N.A."}
+            </span>
+          </div>
+          <div className="w-[300px] font-semibold text-sm text-ellipsis overflow-hidden">
+            <span className="py-2">{`Industry :`}</span>
+            <span
+              className="px-1 py-2 font-medium"
+              title={getInitialLetterUpperCase(speakerInfo?.industry) ?? "N.A."}
+            >
+              {getInitialLetterUpperCase(speakerInfo?.industry) ?? "N.A."}
+            </span>
+          </div>
         </div>
       </div>
     );

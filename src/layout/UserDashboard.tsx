@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import AccordionCustom from "../components/AccordionCustom";
 import AuthValidator from "../components/AuthValidator";
+import ButtonCustom from "../components/ButtonCustom";
 import CardTemplates from "../components/CardTemplates";
 import { CARD_SUGGESTIONS, LOCAL_STORAGE_ITEMS } from "../constant";
-import ButtonCustom from "../components/ButtonCustom";
 
 interface IUserDashboard {
   userInterfaceData: {
@@ -79,11 +79,7 @@ const UserDashboardLayout = (props: IUserDashboard) => {
           </div>
           <div className="col-span-1">
             <span className="font-semibold">Time : </span>
-            <span className="">{data?.time}</span>
-          </div>
-          <div className="col-span-1">
-            <span className="font-semibold">TimeZone : </span>
-            <span className="">{data?.timeZone}</span>
+            <span className="">{`${data?.time} ${data?.timeZone}`}</span>
           </div>
         </div>
 
@@ -172,7 +168,7 @@ const UserDashboardLayout = (props: IUserDashboard) => {
               </React.Fragment>
             </div>
           ) : (
-            <div className="w-full h-full flex items-center justify-center relative">
+            <div className="w-full h-screen flex items-center justify-center relative">
               <h4 className="font-bold text-xl">No webinars to show.</h4>
             </div>
           )}

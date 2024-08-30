@@ -61,9 +61,9 @@ const PageSpeakerInfo: React.FC = () => {
                     <div className="w-[30%] p-5 flex flex-col gap-5">
                       <div className="w-[150px] h-[150px] flex items-center justify-center  border border-primary-light-900 rounded-lg">
                         <img
-                          className="w-full h-full border rounded-lg object-fill"
+                          className="w-full h-full border rounded-lg object-fill text-xs"
                           src={speakerData?.photo}
-                          alt="speaker's image"
+                          alt={getInitialLetterUpperCase(speakerData?.name)}
                         />
                       </div>
 

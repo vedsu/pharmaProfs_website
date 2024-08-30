@@ -45,6 +45,25 @@ export const ddmmyy = (date: any) => {
   }
 };
 
+export const monDayYear = (date: Date) => {
+  const receivedDate = new Date(date);
+  if (receivedDate) {
+    return receivedDate.toLocaleString("en-US", {
+      // weekday: "long",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  } else {
+    return new Date().toLocaleString("en-US", {
+      // weekday: "long",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  }
+};
+
 export const validateGetRequest = (res: any) => {
   if (res?.status === 200) return true;
   else return false;
