@@ -4,6 +4,7 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import ppLogo from "../../assets/images/PP_favicon.png";
 import { loadStripe } from "@stripe/stripe-js";
 import { BaseSyntheticEvent, ReactNode, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -122,23 +123,36 @@ const CheckoutForm = (props: any) => {
   return (
     <div className="stripe-gateway-wrapper my-5 p-5">
       <form
-        className="my-5 p-5 flex flex-col items-center justify-center"
+        className="my-4 px-5 py-4 flex flex-col items-center justify-center"
         onSubmit={handleStripePay}
       >
-        <div className="min-w-[400px]">
-          <div className="my-8 text-left text-sm text-primary-bg-teal font-bold">
-            Please enter your card details
+        <div className="pp-payment-card-wrapper px-10 pb-12 pt-6 min-w-[400px] border border-primary-light-900 rounded-lg">
+          <div className="flex items-center justify-center">
+            <img className="w-8 h-8" alt="pp-icon" src={ppLogo} />
+            <h4 className="text-primary-bg-teal text-2xl">PharmaProfs</h4>
           </div>
-          <CardElement />
-          <ButtonCustom
-            containerClassName="my-8"
-            className="w-full p-2 text-center bg-primary-bg-teal text-primary-pTextLight rounded-md"
-            type={"submit"}
-            label={`Pay $${props?.checkoutInfo?.amount}`}
-            isLoading={showPaymentInProgress}
-            labelClassName={`mx-2`}
-            disabled={!stripe}
-          />
+
+          <div className="mb-10 text-left text-sm text-primary-bg-teal font-bold">
+            Complete your payment by filling in the requested information.
+          </div>
+
+          <div className="w-full flex flex-col gap-12 items-center">
+            <div className="w-full">
+              <div className="mb-4 text-left text-sm text-primary-bg-teal font-bold">
+                Please enter your card details
+              </div>
+              <CardElement className="" />
+            </div>
+            <ButtonCustom
+              containerClassName="w-full"
+              className="w-full p-2 text-center bg-primary-bg-teal text-primary-pTextLight rounded-md"
+              type={"submit"}
+              label={`Pay $${props?.checkoutInfo?.amount}`}
+              isLoading={showPaymentInProgress}
+              labelClassName={`mx-2`}
+              disabled={!stripe}
+            />
+          </div>
         </div>
       </form>
 

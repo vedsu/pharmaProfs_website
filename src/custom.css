@@ -292,6 +292,10 @@ nav {
   background-size: cover;
 }
 
+.user-webinar-list {
+  position: relative;
+}
+
 .side-menu-wrapper {
   grid-column: 7/10;
   padding: 0 10px;
@@ -575,3 +579,6 @@ input[type="checkbox"] {
 }
 
 /*------------------------------Stripe------------------------------------*/
+.pp-payment-card-wrapper {
+  box-shadow: 10px 7px 15px 5px #f9f9f9;
+}

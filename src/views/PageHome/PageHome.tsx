@@ -115,8 +115,8 @@ const PageHome: React.FC = () => {
       </section>
 
       <div className="page-margin">
-        <div className="flex flex-col gap-20">
-          <section className="px-10 flex items-start justify-around">
+        <div className="flex flex-col gap-20 items-center justify-center">
+          <section className="w-full px-10 flex items-start justify-around">
             <div className="p-5 w-64 border rounded-lg">
               <div className="flex flex-col gap-2">
                 <h2 className="py-2 text-xl text-center bg-primary-bg-mintCream">

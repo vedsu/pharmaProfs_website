@@ -13,17 +13,24 @@ interface IUserDashboard {
   };
 }
 
-const userInstructions = [
-  "   Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, necessitatibus? Et labore hic debitis deserunt quo? Beatae, amet dolores ratione, perferendis illo voluptate molestiae, iure fugiat quam exercitationem similique magni.",
-  "   Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, necessitatibus? Et labore hic debitis deserunt quo? Beatae, amet dolores ratione, perferendis illo voluptate molestiae, iure fugiat quam exercitationem similique magni.",
-  "   Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, necessitatibus? Et labore hic debitis deserunt quo? Beatae, amet dolores ratione, perferendis illo voluptate molestiae, iure fugiat quam exercitationem similique magni.",
-  "   Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, necessitatibus? Et labore hic debitis deserunt quo? Beatae, amet dolores ratione, perferendis illo voluptate molestiae, iure fugiat quam exercitationem similique magni.",
+const dashboardInstructionsAttendee = [
+  "Live Webinar Training: A real-time virtual webinar link and instructions will be provided 24 hours before each session.",
+  "Recorded Webinar: A pre-recorded event available for 30 days. The recording will be sent 24-48 hours after the live session concludes.",
+  "Digital Download: A file available for download, accessible for 30 days. It will be provided 3-7 working days after the live session.",
+  "Transcript: A written form of the webinar, including participant questions and presenter comments, available for 30 days.",
+  "It will be sent within 3-7 working days after the live session.",
+];
+
+const dashboardInstructionsSpeaker = [
+  "A link for every virtual live session will be provided alongside instructions 24 hours before the session begins. ",
 ];
 
 const UserDashboardLayout = (props: IUserDashboard) => {
   const { webinarData, accordionTemplateData, onClickWebinarCardHandler } =
     props.userInterfaceData;
 
+  const [isRoleSpeaker, setIsRoleSpeaker] = useState(false);
+  const [userInstructions, setUserInstructions] = useState<string[]>([]);
   const [showCardContinuePurchase, setShowCardContinuePurchase] =
     useState(false);
   const [continuePurchaseCardData, setContinuePurchaseCardData] =
@@ -35,6 +42,17 @@ const UserDashboardLayout = (props: IUserDashboard) => {
       const cardContinuePurchaseInfo = localStorage.getItem(
         LOCAL_STORAGE_ITEMS.CARD_CONTINUE_PURCHASE
       );
+
+      if (userInfo) {
+        const parsedUserInfo = JSON.parse(userInfo);
+        setIsRoleSpeaker(parsedUserInfo?.role?.speaker ? true : false);
+
+        if (parsedUserInfo?.role?.speaker) {
+          setUserInstructions(dashboardInstructionsSpeaker);
+        } else if (parsedUserInfo?.role?.attendee) {
+          setUserInstructions(dashboardInstructionsAttendee);
+        }
+      }
 
       if (userInfo && cardContinuePurchaseInfo) {
         const parsedUserInfo = JSON.parse(userInfo);
@@ -60,73 +78,95 @@ const UserDashboardLayout = (props: IUserDashboard) => {
   const renderWebinarCards = (data: any) => {
     return (
       <div
-        className="p-3 flex flex-col gap-2 border-2 text-sm rounded-md cursor-pointer"
+        key={Math.random().toString(36)?.substring(2, 8)}
+        className=""
         onClick={onClickWebinarCardHandler}
       >
-        <div>
-          <span className="font-semibold">Topic : </span>
-          <span className="font-medium">{data?.webinar ?? ""}</span>
-        </div>
-
-        <div className="grid grid-cols-3">
-          <div className="col-span-1">
-            <span className="font-semibold">Duration : </span>
-            <span className="">{Number(data?.duration ?? "")} mins</span>
-          </div>
-          <div className="col-span-1">
-            <span className="font-semibold">Date : </span>
-            <span className="">{data?.date}</span>
-          </div>
-          <div className="col-span-1">
-            <span className="font-semibold">Time : </span>
-            <span className="">{`${data?.time} ${data?.timeZone}`}</span>
-          </div>
-        </div>
-
-        {data?.live_url ? (
+        <div className="p-3 card-scale flex flex-col gap-2 border-2 text-sm rounded-md cursor-pointer">
           <div>
-            <span className="font-semibold">Live URL : </span>
-            <a className="text-blue-500" href={data?.live_url}>
-              {data?.live_url ?? ""}
-            </a>
+            <span className="font-semibold">Topic : </span>
+            <span className="font-medium">{data?.webinar ?? "N.A."}</span>
           </div>
-        ) : null}
 
-        {data?.recording_url ? (
-          <div>
-            <span className="font-semibold">Recording URL : </span>
-            <a className="text-blue-500" href={data?.recording_url}>
-              {data?.recording_url ?? ""}
-            </a>
+          <div className="grid grid-cols-3">
+            <div className="col-span-1">
+              <span className="font-semibold">Duration : </span>
+              <span className="">
+                {Number(data?.duration ?? "N.A.")} minutes
+              </span>
+            </div>
+            <div className="col-span-1">
+              <span className="font-semibold">Date : </span>
+              <span className="">{data?.date ?? "N.A."}</span>
+            </div>
+            <div className="col-span-1">
+              <span className="font-semibold">Time : </span>
+              <span className="">{`${data?.time ?? "-"} ${
+                data?.timeZone ?? "-"
+              }`}</span>
+            </div>
           </div>
-        ) : null}
-        {data?.digitaldownload_url ? (
-          <div>
-            <span className="font-semibold">DD URL : </span>
-            <a className="text-blue-500" href={data?.digitaldownload_url}>
-              {data?.digitaldownload_url ?? ""}
-            </a>
-          </div>
-        ) : null}
-        {data?.transcript_url ? (
-          <div>
-            <span className="font-semibold">Transcript URL : </span>
-            <a className="text-blue-500" href={data?.transcript_url}>
-              {data?.transcript_url ?? ""}
-            </a>
-          </div>
-        ) : null}
 
-        <div>
-          <ButtonCustom
-            className="py-1 px-2 max-w-fit font-semibold text-sm bg-primary-bg-lightCyan rounded-full"
-            handleClick={() => {
-              window.location.href = data?.document;
-            }}
-            label={"Download Receipt"}
-          >
-            <i className="mx-1 pi pi-download text-sm"></i>
-          </ButtonCustom>
+          {data?.sessionLive && isRoleSpeaker ? (
+            <div>
+              <span className="font-semibold">Live URL : </span>
+              <a className="text-blue-500" href={data?.urlLive}>
+                {data?.urlLive ?? ""}
+              </a>
+            </div>
+          ) : null}
+
+          {!isRoleSpeaker && (
+            <React.Fragment>
+              {data?.live_url ? (
+                <div>
+                  <span className="font-semibold">Live URL : </span>
+                  <a className="text-blue-500" href={data?.live_url}>
+                    {data?.live_url ?? ""}
+                  </a>
+                </div>
+              ) : null}
+
+              {data?.recording_url ? (
+                <div>
+                  <span className="font-semibold">Recording URL : </span>
+                  <a className="text-blue-500" href={data?.recording_url}>
+                    {data?.recording_url ?? ""}
+                  </a>
+                </div>
+              ) : null}
+
+              {data?.digitaldownload_url ? (
+                <div>
+                  <span className="font-semibold">DD URL : </span>
+                  <a className="text-blue-500" href={data?.digitaldownload_url}>
+                    {data?.digitaldownload_url ?? ""}
+                  </a>
+                </div>
+              ) : null}
+
+              {data?.transcript_url ? (
+                <div>
+                  <span className="font-semibold">Transcript URL : </span>
+                  <a className="text-blue-500" href={data?.transcript_url}>
+                    {data?.transcript_url ?? ""}
+                  </a>
+                </div>
+              ) : null}
+
+              <div>
+                <ButtonCustom
+                  className="py-1 px-2 max-w-fit font-semibold text-sm bg-primary-bg-lightCyan rounded-full"
+                  handleClick={() => {
+                    window.location.href = data?.document;
+                  }}
+                  label={"Download Receipt"}
+                >
+                  <i className="mx-1 pi pi-download text-sm"></i>
+                </ButtonCustom>
+              </div>
+            </React.Fragment>
+          )}
         </div>
       </div>
     );
@@ -149,17 +189,22 @@ const UserDashboardLayout = (props: IUserDashboard) => {
           ) : null}
 
           {webinarData?.length ? (
-            <div className="user-webinar-list flex flex-col gap-2">
+            <div className="user-webinar-list flex flex-col gap-4">
               <React.Fragment>
-                <div className="w-full">
+                <div className="w-full p-6 border border-primary-light-900 rounded-lg">
                   <h4 className="font-bold text-xl">INSTRUCTIONS :</h4>
-                  <ul className="list-disc">
+                  <ol className="list-decimal">
                     {userInstructions?.map((instruction, idx) => (
-                      <li key={idx} className="my-2 font-bold text-sm">
+                      <li key={`${idx + 1}`} className="my-2 font-bold text-sm">
                         {instruction}
                       </li>
                     ))}
-                  </ul>
+                  </ol>
+                  <p className="mt-2 font-bold text-sm">
+                    {isRoleSpeaker
+                      ? "For any queries, please contact Brian at brian@pharmaprofs.com"
+                      : "For any queries, please contact the Webinar Team at support@pharmaprofs.com."}
+                  </p>
                 </div>
 
                 {webinarData.map((data) => {

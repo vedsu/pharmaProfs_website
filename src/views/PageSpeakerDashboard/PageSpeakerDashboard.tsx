@@ -7,50 +7,26 @@ import { validateGetRequest } from "../../utils/commonUtils";
 const PageSpeakerDashboard = () => {
   const [speakerDashboardData, setSpeakerDashboardInfo] = useState([]);
 
-  const [
-    speakerDashboardHistoryPurchased,
-    setSpeakerDashboardHistoryPurchased,
-  ] = useState([]);
-  const [speakerDashboardHistoryPending, setSpeakerDashboardHistoryPending] =
-    useState([]);
+  const [speakerDashboardHistory, setSpeakerDashboardHistory] = useState([]);
 
   const accordionTemplateData = [
     {
       title: "History",
       description: (
         <React.Fragment>
-          {speakerDashboardHistoryPurchased?.length ? (
+          {speakerDashboardHistory?.length ? (
             <div className="px-2 flex flex-col gap-5">
               <div>
-                <div className="my-2 text-left font-semibold text-sm">
-                  <div className="px-2">Purchased</div>
-                </div>
                 <ul className="text-sm font-normal">
-                  {speakerDashboardHistoryPurchased?.map(
-                    (historyPurchase: any, idx: number) => (
+                  {speakerDashboardHistory?.map(
+                    (historyItem: any, idx: number) => (
                       <li key={idx + 1} className="my-2 px-2">
-                        <span>◈ {historyPurchase}</span>
+                        <span>◈ {historyItem}</span>
                       </li>
                     )
                   )}
                 </ul>
               </div>
-              {speakerDashboardHistoryPending?.length ? (
-                <div>
-                  <div className="my-2 text-left font-semibold text-sm">
-                    <div className="px-2">Pending</div>
-                  </div>
-                  <ul className="text-sm font-normal">
-                    {speakerDashboardHistoryPending?.map(
-                      (historyPending: any, idx: number) => (
-                        <li key={idx + 1} className="my-2 px-2">
-                          <span>◈ {historyPending}</span>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </div>
-              ) : null}
             </div>
           ) : (
             <div className="text-sm font-normal">
@@ -83,8 +59,7 @@ const PageSpeakerDashboard = () => {
 
         if (validateGetRequest(res)) {
           setSpeakerDashboardInfo(res?.data?.[0]);
-          setSpeakerDashboardHistoryPending(res?.data?.[1]);
-          setSpeakerDashboardHistoryPurchased(res?.data?.[2]);
+          setSpeakerDashboardHistory(res?.data?.[1]);
         }
       } catch (error) {
         console.error(error);

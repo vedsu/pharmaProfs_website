@@ -2,7 +2,7 @@ import React from "react";
 
 const PageAboutUs: React.FC = () => {
   return (
-    <div className="page-margin min-h-[50vh]">
+    <div className="page-margin min-h-[60vh]">
       <section className="py-5 flex flex-col items-center justify-center gap-5">
         <div className="flex flex-col gap-5 text-sm">
           <h4 className="font-semibold text-2xl text-primary-pTextTeal ">
@@ -26,6 +26,11 @@ const PageAboutUs: React.FC = () => {
               pharmaceutical sector.
             </span>
           </p>
+
+          <div className="flex flex-col gap-5 font-normal text-sm">
+            <p>Email: support@pharmaprofs.com</p>
+            <p>Contact us: +1-830-256-0384</p>
+          </div>
         </div>
       </section>
     </div>

@@ -229,25 +229,27 @@ const PageWebinarInfo: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <label
-                  htmlFor="checkbox-buy-live"
-                  className="webinar-purchase-label"
-                >
-                  {"Live"}
-                  <input
-                    id="checkbox-buy-live"
-                    type="checkbox"
-                    className="buy-webinar-input"
-                    onChange={handlePurchaseInput}
-                    value={webinarData?.priceLive}
-                  />
-                  <span className="check-mark"></span>
-                </label>
-              </td>
-              <td>{webinarData?.priceLive}</td>
-            </tr>
+            {webinarData?.sessionLive && (
+              <tr>
+                <td>
+                  <label
+                    htmlFor="checkbox-buy-live"
+                    className="webinar-purchase-label"
+                  >
+                    {"Live"}
+                    <input
+                      id="checkbox-buy-live"
+                      type="checkbox"
+                      className="buy-webinar-input"
+                      onChange={handlePurchaseInput}
+                      value={webinarData?.priceLive}
+                    />
+                    <span className="check-mark"></span>
+                  </label>
+                </td>
+                <td>{webinarData?.priceLive}</td>
+              </tr>
+            )}
             <tr>
               <td>
                 <label

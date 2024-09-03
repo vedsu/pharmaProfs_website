@@ -18,7 +18,7 @@ const CardTemplates = (props: ICardTemplates) => {
     <div className="w-full p-5">
       <div className="w-full flex flex-col gap-5 text-sm text-primary-pText">
         <div>
-          <h4 className="text-xl">Recommendations</h4>
+          <h4 className="text-xl">Continue where you left off</h4>
           <p className="text-base">{cardData?.webinarTitle}</p>
         </div>
         <div className="self-end flex items-center gap-5">
