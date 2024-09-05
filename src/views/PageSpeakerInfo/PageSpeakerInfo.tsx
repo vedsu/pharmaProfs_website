@@ -58,7 +58,7 @@ const PageSpeakerInfo: React.FC = () => {
               {Object.keys(speakerData)?.length ? (
                 <React.Fragment>
                   <div className="w-full flex items-start justify-between gap-5">
-                    <div className="w-[30%] p-5 flex flex-col gap-5">
+                    <div className="p-5 flex flex-col gap-5">
                       <div className="w-[150px] h-[150px] flex items-center justify-center  border border-primary-light-900 rounded-lg">
                         <img
                           className="w-full h-full border rounded-lg object-fill text-xs"
@@ -77,7 +77,7 @@ const PageSpeakerInfo: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="w-[70%] py-5 text-sm leading-6">
+                    <div className="py-5 text-sm leading-6">
                       <p>{speakerData?.bio}</p>
                     </div>
                   </div>
