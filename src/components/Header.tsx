@@ -63,12 +63,12 @@ const Header: React.FC = () => {
       <nav>
         <div className="flex items-center justify-between">
           <div
-            className="w-72 flex items-center justify-center cursor-pointer"
+            className="flex items-center justify-center cursor-pointer"
             onClick={() => {
               navigate(LINK_HOME);
             }}
           >
-            <img className="" src={brandLogo} alt="logo" />
+            <img className="w-72" src={brandLogo} alt="logo" />
           </div>
 
           <div className="flex items-center justify-between">
@@ -197,28 +197,28 @@ const Header: React.FC = () => {
                               <div className="font-bold">Courses</div>
                               <ul className="mega-menu-links courses-list">
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?courses=all`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?courses=all`}
                                     className="font-thin"
                                   >
                                     All
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?courses=live`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?courses=live`}
                                     className="font-thin"
                                   >
                                     Live
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?courses=recording`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?courses=recording`}
                                     className="font-thin"
                                   >
                                     Recording
-                                  </a>
+                                  </Link>
                                 </li>
                               </ul>
                             </div>
