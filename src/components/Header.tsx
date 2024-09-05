@@ -109,7 +109,12 @@ const Header: React.FC = () => {
                           <div className="w-layout-grid mega-menu-grid _2-cols">
                             <div className="flex flex-col gap-3">
                               <div className="font-bold">Category</div>
-                              <ul className="mega-menu-links category-list">
+                              <ul
+                                className="mega-menu-links category-list"
+                                onClick={() => {
+                                  window?.location?.reload();
+                                }}
+                              >
                                 <li>
                                   <Link
                                     to={`${LINK_PAGE_WEBINAR_LISTING}?category=all`}
@@ -193,14 +198,14 @@ const Header: React.FC = () => {
                               </ul>
                             </div>
 
-                            <div
-                              className="flex flex-col gap-3"
-                              // onClick={() => {
-                              //   window?.location?.reload();
-                              // }}
-                            >
+                            <div className="flex flex-col gap-3">
                               <div className="font-bold">Courses</div>
-                              <ul className="mega-menu-links courses-list">
+                              <ul
+                                className="mega-menu-links courses-list"
+                                onClick={() => {
+                                  window?.location?.reload();
+                                }}
+                              >
                                 <li>
                                   <Link
                                     to={`${LINK_PAGE_WEBINAR_LISTING}?courses=all`}

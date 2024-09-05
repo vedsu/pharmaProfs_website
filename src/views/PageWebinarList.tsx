@@ -299,7 +299,7 @@ const PageWebinarList: React.FC = () => {
   };
 
   return (
-    <div className="p-5 webinar-wrapper flex flex-col gap-5">
+    <div className="p-5 webinar-wrapper flex flex-col gap-5 min-h-[60vh]">
       <div className="w-full flex items-center justify-center">
         <InputText
           className="w-1/2 min-w-64 px-2 py-2 border border-primary-light-900 outline-none"
