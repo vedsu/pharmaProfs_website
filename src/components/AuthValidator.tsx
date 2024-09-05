@@ -2,7 +2,7 @@ import React from "react";
 import { LOCAL_STORAGE_ITEMS, USER_ROLE } from "../constant";
 import { LINK_HOME, LINK_UNAUTHORIZED_DASHBOARD } from "../routes";
 
-class AuthValidator extends React.Component {
+class AuthValidator extends React.Component<{ children: any }> {
   constructor(props: any) {
     super(props);
     this.state = {};
