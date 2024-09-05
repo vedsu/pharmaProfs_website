@@ -71,10 +71,10 @@ const PageWebinarList: React.FC = () => {
   }, [webinarsList, webinarCategory, webinarSession]);
 
   React.useEffect(() => {
-    const init = async () => {
+    const onMount = async () => {
       await getAllWebinars();
     };
-    init();
+    onMount();
   }, []);
 
   React.useEffect(() => {

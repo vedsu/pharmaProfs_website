@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import brandLogo from "../assets/images/pp_brand_logo.png";
 import { ENV_VAR, LOCAL_STORAGE_ITEMS } from "../constant";
 import {
@@ -389,13 +389,13 @@ const Header: React.FC = () => {
               </div>
             ) : (
               <div>
-                <a
-                  href={LINK_PAGE_LOGIN_REG}
+                <Link
+                  to={LINK_PAGE_LOGIN_REG}
                   className="nav-login-reg bg-primary-bg-obsidianBlack rounded-full"
                 >
                   <span>Login / Register</span>
                   <i className="mx-2 text-xs pi pi-sign-in"></i>
-                </a>
+                </Link>
               </div>
             )}
           </div>
