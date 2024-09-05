@@ -44,7 +44,7 @@ const PageSpeakerInfo: React.FC = () => {
   }, [getSpeakerDetails]);
 
   return (
-    <div className="page-margin">
+    <div className="page-margin min-h-[60vh]">
       <section className="my-10 p-5 border border-primary-light-900">
         <div className="w-full flex items-center justify-center gap-5">
           {isLoadingSpeaker ? (
