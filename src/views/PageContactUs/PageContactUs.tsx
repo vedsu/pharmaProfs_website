@@ -101,7 +101,7 @@ const PageContactUs: React.FC = () => {
   };
 
   return (
-    <div className="page-margin">
+    <div className="page-margin  min-h-[60vh]">
       <section className="py-5 flex flex-col items-center justify-center">
         <div className="flex flex-col gap-5">
           <div className="mb-1 w-full text-left">

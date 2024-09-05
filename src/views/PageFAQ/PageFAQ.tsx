@@ -72,7 +72,7 @@ const PageFAQ: React.FC = () => {
   ];
 
   return (
-    <div className="page-margin">
+    <div className="page-margin min-h-[60vh]">
       <div className="w-full py-5">
         <h4 className="font-semibold text-2xl text-primary-pTextTeal ">FAQ</h4>
         <p className="text-sm font-semibold text-primary-pText">

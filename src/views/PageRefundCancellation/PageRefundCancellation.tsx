@@ -74,7 +74,7 @@ const PageRefundCancellation: React.FC = () => {
   ];
 
   return (
-    <div className="page-margin">
+    <div className="page-margin  min-h-[60vh]">
       <section className="py-5 flex flex-col items-center justify-center gap-5">
         <div className="w-full flex flex-col gap-5 text-sm">
           <div className="flex flex-col text-left">
