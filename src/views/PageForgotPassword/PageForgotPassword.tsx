@@ -35,9 +35,9 @@ const PageForgotPassword: React.FC = () => {
   };
 
   return (
-    <div className="page-margin">
+    <div className="page-margin min-h-[60vh]">
       <section className="py-5 flex flex-col items-center justify-center gap-5">
-        <div className="w-full flex flex-col gap-5 text-sm text-left">
+        <div className="w-full flex flex-col text-sm text-left">
           <h4 className="font-semibold text-2xl text-primary-pTextTeal ">
             Forgot Password
           </h4>
@@ -55,6 +55,7 @@ const PageForgotPassword: React.FC = () => {
             <Input
               className="w-72 h-8"
               name={"email"}
+              placeholder="Enter your email"
               label={"Email"}
               type={"email"}
               value={formForgotPassData.email}
@@ -68,14 +69,14 @@ const PageForgotPassword: React.FC = () => {
 
           <div className="px-2">
             <ButtonCustom
-              className="w-full h-8 px-2 flex gap-2 justify-center text-primary-pTextLight bg-primary-bg-teal border border-primary-light-900 hover:bg-primary-bg-lightTeal"
+              className="w-full h-8 px-2 flex gap-2 justify-center text-primary-pTextLight bg-primary-bg-teal border border-primary-light-900 hover:bg-primary-bg-lightTeal rounded-full"
               label={"Submit"}
               handleClickWithLoader={onSubmitForgotPassForm}
             />
           </div>
 
           <div className="px-2">
-            <div className="w-full h-8 px-2 flex gap-2 justify-center bg-primary-bg-mintCream border border-primary-light-900 leading-8">
+            <div className="w-full h-8 px-2 flex gap-2 justify-center bg-primary-bg-mintCream border border-primary-light-900 rounded-full leading-8">
               <span>or</span>
               <Link to={LINK_PAGE_LOGIN_REG}>
                 <span className="mx-1 text-primary-bg-teal">Login</span>
