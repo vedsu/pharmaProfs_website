@@ -79,7 +79,7 @@ const Header: React.FC = () => {
                 </li>
               ) : null}
               <li className="nav-link-item">
-                <a href={LINK_HOME}>Home</a>
+                <Link to={LINK_HOME}>Home</Link>
               </li>
               <li className="nav-link-item">
                 <div
@@ -111,89 +111,94 @@ const Header: React.FC = () => {
                               <div className="font-bold">Category</div>
                               <ul className="mega-menu-links category-list">
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?category=all`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?category=all`}
                                     className="font-thin"
                                   >
                                     {`All`}
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?category=quality assurance`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?category=quality assurance`}
                                     className="font-thin"
                                   >
                                     {`Quality Assurance`}
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?category=quality control`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?category=quality control`}
                                     className="font-thin"
                                   >
                                     {`Quality Control`}
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?category=regulatory affairs`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?category=regulatory affairs`}
                                     className="font-thin"
                                   >
                                     {`Regulatory Affairs`}
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?category=regulatory compliance`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?category=regulatory compliance`}
                                     className="font-thin"
                                   >
                                     {`Regulatory Compliance`}
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?category=medical device`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?category=medical device`}
                                     className="font-thin"
                                   >
                                     {`Medical Devices`}
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?category=research and development`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?category=research and development`}
                                     className="font-thin"
                                   >
                                     {`Research and Development (R&D)`}
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?category=manufacturing compliance`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?category=manufacturing compliance`}
                                     className="font-thin"
                                   >
                                     {`Manufacturing (GxP) Compliance`}
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?category=pharmaceutical automation`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?category=pharmaceutical automation`}
                                     className="font-thin"
                                   >
                                     {`Pharmaceutical Automation (AI)`}
-                                  </a>
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a
-                                    href={`${LINK_PAGE_WEBINAR_LISTING}?category=supply chain and warehousing`}
+                                  <Link
+                                    to={`${LINK_PAGE_WEBINAR_LISTING}?category=supply chain and warehousing`}
                                     className="font-thin"
                                   >
                                     {`Supply chain and Warehousing`}
-                                  </a>
+                                  </Link>
                                 </li>
                               </ul>
                             </div>
 
-                            <div className="flex flex-col gap-3">
+                            <div
+                              className="flex flex-col gap-3"
+                              // onClick={() => {
+                              //   window?.location?.reload();
+                              // }}
+                            >
                               <div className="font-bold">Courses</div>
                               <ul className="mega-menu-links courses-list">
                                 <li>
