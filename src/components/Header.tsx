@@ -109,12 +109,7 @@ const Header: React.FC = () => {
                           <div className="w-layout-grid mega-menu-grid _2-cols">
                             <div className="flex flex-col gap-3">
                               <div className="font-bold">Category</div>
-                              <ul
-                                className="mega-menu-links category-list"
-                                onClick={() => {
-                                  window?.location?.reload();
-                                }}
-                              >
+                              <ul className="mega-menu-links category-list">
                                 <li>
                                   <Link
                                     to={`${LINK_PAGE_WEBINAR_LISTING}?category=all`}
@@ -200,12 +195,7 @@ const Header: React.FC = () => {
 
                             <div className="flex flex-col gap-3">
                               <div className="font-bold">Courses</div>
-                              <ul
-                                className="mega-menu-links courses-list"
-                                onClick={() => {
-                                  window?.location?.reload();
-                                }}
-                              >
+                              <ul className="mega-menu-links courses-list">
                                 <li>
                                   <Link
                                     to={`${LINK_PAGE_WEBINAR_LISTING}?courses=all`}
@@ -270,13 +260,13 @@ const Header: React.FC = () => {
                             <div />
                             <ul className="mega-menu-links nav-company-list">
                               <li>
-                                <a href={LINK_PAGE_ABOUT_US}>About Us</a>
+                                <Link to={LINK_PAGE_ABOUT_US}>About Us</Link>
                               </li>
                               <li>
-                                <a href={LINK_PAGE_FAQ}>FAQ's</a>
+                                <Link to={LINK_PAGE_FAQ}>FAQ's</Link>
                               </li>
                               <li>
-                                <a href={LINK_PAGE_SPEAKERS}>Teams</a>
+                                <Link to={LINK_PAGE_SPEAKERS}>Teams</Link>
                               </li>
                             </ul>
                           </div>
