@@ -67,7 +67,7 @@ const PageForgotPassword: React.FC = () => {
             {/* <small></small> */}
           </div>
 
-          <div className="px-3">
+          <div className="px-2">
             <ButtonCustom
               className="w-full h-8 px-2 flex gap-2 justify-center text-primary-pTextLight bg-primary-bg-teal border border-primary-light-900 hover:bg-primary-bg-lightTeal rounded-full"
               label={"Submit"}
@@ -75,7 +75,7 @@ const PageForgotPassword: React.FC = () => {
             />
           </div>
 
-          <div className="px-3">
+          <div className="px-2">
             <div className="w-full h-8 px-2 flex gap-2 justify-center bg-primary-bg-mintCream border border-primary-light-900 rounded-full leading-8">
               <span>or</span>
               <Link to={LINK_PAGE_LOGIN_REG}>
