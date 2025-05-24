@@ -54,12 +54,17 @@ export const SUBSCRIPTION_TYPE = {
 
 export const CARD_SUGGESTIONS = {
   CONTINUE_PURCHASE: "continuePurchaseAfterReg",
+  CONTINUE_PURCHASE_NEWSLETTER: "continuePurchaseNewsletterAfterReg",
 };
 
 export const LOCAL_STORAGE_ITEMS = {
   USERINFO: "userInfo",
   CARD_CONTINUE_PURCHASE: CARD_SUGGESTIONS.CONTINUE_PURCHASE,
+  CARD_CONTINUE_PURCHASE_NEWSLETTER:
+    CARD_SUGGESTIONS.CONTINUE_PURCHASE_NEWSLETTER,
   PURCHASE_INFO: "purchaseWebinarInfo",
+  PURCHASE_INFO_NEWSLETTER: "purchaseNewsletterInfo",
+  PURCHASE_INFO_FREE_NEWSLETTER: "purchaseFreeNewsletterInfo",
   CART_DATA: "cartDataInfo",
   PAYMENT_STATUS_SUCCESS: "paymentSuccessInfo",
   PURCHASE_SUCCESS_MESSAGE: "purchaseSuccessMessageInfo",
@@ -67,6 +72,7 @@ export const LOCAL_STORAGE_ITEMS = {
 
 export const SESSION_STORAGE_ITEMS = {
   REG_BANNER: "regBanner",
+  INVOICE_NUMBER: "invoice_num",
 };
 
 export const FORM_DATA_OPTIONS = {
@@ -81,7 +87,27 @@ export const FORM_DATA_OPTIONS = {
   },
 };
 
+export const PURCHASE_CATEGORY = {
+  INDIVIDUAL: "INDIVIDUAL",
+  CORPORATE: "CORPORATE",
+};
+
 export const PAYMENT_STATUS = {
   PURCHASED: "purchased",
   PENDING: "pending",
+};
+
+export const COUPON_TYPE = {
+  BY_PERCENTAGE: "per",
+  BY_AMOUNT: "dollar",
+};
+
+export const COUPON_MESSAGE = {
+  SUCCESS: "success",
+  INVALID: "invalid",
+};
+
+export const COUPON_STATUS = {
+  ACTIVE: "Active",
+  INACTIVE: "Inactive",
 };

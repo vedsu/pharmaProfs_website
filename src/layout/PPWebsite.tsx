@@ -3,6 +3,7 @@ import React, {
   BaseSyntheticEvent,
   ReactNode,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { Outlet, useLocation } from "react-router-dom";
@@ -16,6 +17,7 @@ import { SESSION_STORAGE_ITEMS, SUBSCRIPTION_TYPE } from "../constant";
 import { LINK_PAGE_CHECKOUT } from "../routes";
 import SubscriptionService from "../services/SubscriptionService";
 import { validatePostRequest } from "../utils/commonUtils";
+import SimpleReactValidator from "simple-react-validator";
 
 const registerBeforeCheckOutBanner = (
   <div className="site-banner">
@@ -35,11 +37,22 @@ const initialSubscribeFormData = {
 const PPWebsite: React.FC = () => {
   const location = useLocation();
   const [showRegistrationBanner, setShowRegistrationBanner] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(true);
+  const [showSubscriptionTypeNotSelected, setShowSubscriptionTypeNotSelected] =
+    useState(false);
   const [showSubscribeFormDialog, setShowSubscribeFormDialog] = useState(false);
   const [subscribeFormData, setSubscribeFormData] = useState(
     initialSubscribeFormData
   );
+  const [showSubscribePopUp, setShowSubscribePopUp] = useState({
+    isSuccess: false,
+    showPopUp: false,
+    headerContent: <div />,
+    bodyContent: <div />,
+  });
+  const simpleValidator = useRef(
+    new SimpleReactValidator({ className: "text-danger" })
+  );
+  const [_, forceUpdate] = useState<any>();
 
   useEffect(() => {
     if (location.state && location.state?.showRegCheckOutBanner) {
@@ -57,6 +70,15 @@ const PPWebsite: React.FC = () => {
     }
   }, [location.state]);
 
+  useEffect(() => {
+    const { name, email, jobTitle, subType } = subscribeFormData;
+    if ((name && email && jobTitle && subType) || subType) {
+      if (simpleValidator?.current?.errorMessages?.email) {
+        setShowSubscriptionTypeNotSelected(false);
+      }
+    }
+  }, [subscribeFormData]);
+
   /*----------------------------------Event Handlers------------------------------*/
 
   const handleSubscribeFormDataChange = (e: BaseSyntheticEvent) => {
@@ -67,21 +89,54 @@ const PPWebsite: React.FC = () => {
   };
 
   const onSubmitSubscriptionForm = async () => {
+    const formValid = simpleValidator.current.allValid();
+    if (!formValid || !subscribeFormData.subType) {
+      setShowSubscriptionTypeNotSelected(true);
+      simpleValidator.current.showMessages();
+      forceUpdate("");
+      return;
+    }
+
     const payload = {
       Subscriber: subscribeFormData.email,
       subscriber_name: subscribeFormData.name,
       subscription_type: subscribeFormData.subType,
       subscriber_jobtitle: subscribeFormData.jobTitle,
     };
+
     try {
       const res = await SubscriptionService.subscribe(payload);
       if (validatePostRequest(res)) {
+        setShowSubscribePopUp({
+          isSuccess: true,
+          showPopUp: true,
+          headerContent: <h1 className="text-2xl">Thank You!</h1>,
+          bodyContent: (
+            <div className="p-5">
+              <p>You have {res?.data?.message}.</p>
+            </div>
+          ),
+        });
         setShowSubscribeFormDialog(false);
-        setIsSubscribed(true);
         setSubscribeFormData(initialSubscribeFormData);
       }
     } catch (error) {
+      setShowSubscribePopUp({
+        isSuccess: false,
+        showPopUp: true,
+        headerContent: <h1 className="text-xl">Something went wrong!</h1>,
+        bodyContent: (
+          <div className="p-5">
+            <p>Please retry after sometime.</p>
+          </div>
+        ),
+      });
+      setShowSubscribeFormDialog(false);
       console.error(error);
+    }
+
+    if (window.innerWidth <= 980) {
+      window.location.reload();
     }
   };
 
@@ -97,8 +152,15 @@ const PPWebsite: React.FC = () => {
             value={subscribeFormData.name}
             handler={handleSubscribeFormDataChange}
             mandatory
+            onBlur={() => {
+              simpleValidator.current.showMessageFor("name");
+            }}
+            validationMessage={simpleValidator.current.message(
+              "name",
+              subscribeFormData.name,
+              "required"
+            )}
           />
-          {/* <small></small> */}
         </div>
         <div className="px-2">
           <Input
@@ -109,8 +171,15 @@ const PPWebsite: React.FC = () => {
             value={subscribeFormData.email}
             handler={handleSubscribeFormDataChange}
             mandatory
+            onBlur={() => {
+              simpleValidator.current.showMessageFor("email");
+            }}
+            validationMessage={simpleValidator.current.message(
+              "email",
+              subscribeFormData.email,
+              "required|email"
+            )}
           />
-          {/* <small></small> */}
         </div>
         <div className="px-2">
           <Input
@@ -121,8 +190,15 @@ const PPWebsite: React.FC = () => {
             value={subscribeFormData.jobTitle}
             handler={handleSubscribeFormDataChange}
             mandatory
+            onBlur={() => {
+              simpleValidator.current.showMessageFor("jobTitle");
+            }}
+            validationMessage={simpleValidator.current.message(
+              "jobTitle",
+              subscribeFormData.jobTitle,
+              "required"
+            )}
           />
-          {/* <small></small> */}
         </div>
 
         <div className="px-2">
@@ -168,8 +244,14 @@ const PPWebsite: React.FC = () => {
               <div />
             </div>
           </div>
-          {/* <small></small> */}
         </div>
+
+        {showSubscriptionTypeNotSelected && (
+          <div className="px-2 text-red-500 text-xs">
+            {"Choose your subscription"}
+          </div>
+        )}
+
         <div className="self-center my-2">
           <ButtonCustom
             className="w-32 px-2 flex gap-2 justify-center text-primary-pTextLight bg-primary-bg-teal border border-primary-light-900 rounded-full hover:bg-primary-bg-lightTeal"
@@ -184,28 +266,30 @@ const PPWebsite: React.FC = () => {
   return (
     <React.Fragment>
       {showRegistrationBanner ? registerBeforeCheckOutBanner : null}
-      <Header />
+      <Header
+        subscribeButtonHandler={() => {
+          setShowSubscribeFormDialog(true);
+        }}
+      />
       <main>
         <Outlet />
       </main>
 
-      {isSubscribed ? (
-        <div>
-          <button
-            className="vertical-btn"
-            onClick={() => {
-              setShowSubscribeFormDialog(true);
-            }}
-          >
-            {"Subscribe"}
-          </button>
-        </div>
-      ) : null}
+      <div>
+        <button
+          className="vertical-btn"
+          onClick={() => {
+            setShowSubscribeFormDialog(true);
+          }}
+        >
+          {"Subscribe"}
+        </button>
+      </div>
 
       <DialogCustom
         dialogVisible={showSubscribeFormDialog}
         containerClassName={
-          "max-w-[668px] p-5 border border-primary-light-900 rounded-lg bg-white"
+          "max-w-[500px] p-5 border border-primary-light-900 rounded-lg bg-white"
         }
         headerTemplate={<h1 className="text-2xl">Subscribe</h1>}
         headerTemplateClassName={`flex items-center justify-center`}
@@ -216,6 +300,18 @@ const PPWebsite: React.FC = () => {
         }}
       />
 
+      <DialogCustom
+        dialogVisible={showSubscribePopUp.showPopUp}
+        containerClassName={
+          "max-w-[500px] p-5 border border-primary-light-900 rounded-lg bg-white"
+        }
+        headerTemplate={showSubscribePopUp.headerContent}
+        headerTemplateClassName={`flex items-center justify-center`}
+        bodyTemplate={showSubscribePopUp.bodyContent}
+        onHideDialog={() => {
+          setShowSubscribePopUp((prev) => ({ ...prev, showPopUp: false }));
+        }}
+      />
       {location?.pathname?.includes(LINK_PAGE_CHECKOUT) ? null : <Footer />}
     </React.Fragment>
   );

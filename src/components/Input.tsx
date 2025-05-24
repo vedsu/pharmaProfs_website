@@ -4,7 +4,7 @@ export interface IInputProps extends InputTextProps {
   id?: string;
   className?: string;
   name: string;
-  label: string;
+  label?: string;
   placeholder?: string;
   type?: string;
   value: any;
@@ -27,14 +27,17 @@ const Input = (props: IInputProps) => {
     validationMessage,
     mandatory,
     disabled,
+    ...otherProps
   } = props;
 
   return (
     <div className="mb-2 grid gap-1 relative">
-      <label htmlFor={id}>
-        {label}
-        <span className="text-primary-asterisk">{mandatory ? "*" : ""}</span>
-      </label>
+      {label && (
+        <label htmlFor={id}>
+          {label}
+          <span className="text-primary-asterisk">{mandatory ? "*" : ""}</span>
+        </label>
+      )}
       <InputText
         id={id}
         name={name}
@@ -46,8 +49,11 @@ const Input = (props: IInputProps) => {
         value={value}
         onChange={handler}
         disabled={disabled}
+        {...otherProps}
       />
-      <small>{validationMessage}</small>
+      <div className="text-red-500 text-xs">
+        {validationMessage ? validationMessage : null}
+      </div>
     </div>
   );
 };
