@@ -74,12 +74,12 @@ const PageRefundCancellation: React.FC = () => {
   ];
 
   return (
-    <div className="page-margin  min-h-[60vh]">
-      <section className="py-5 flex flex-col items-center justify-center gap-5">
+    <div className="page-margin w-full ">
+      <section className="px-10 py-5 flex flex-col items-center justify-center gap-5 screen_var_one:px-0">
         <div className="w-full flex flex-col gap-5 text-sm">
           <div className="flex flex-col text-left">
             <h4 className="mb-1 font-semibold text-2xl text-primary-pTextTeal ">
-              {"Refund & Cancellation"}
+              Refund & Cancellation
             </h4>
           </div>
 

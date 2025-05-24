@@ -136,7 +136,9 @@ const PPWebsite: React.FC = () => {
     }
 
     if (window.innerWidth <= 980) {
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     }
   };
 

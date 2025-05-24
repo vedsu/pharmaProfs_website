@@ -80,7 +80,7 @@ const PageHome: React.FC = () => {
         <div className="page-margin">
           <div className="flex flex-col items-center justify-center">
             <div className="w-full relative flex flex-col gap-10">
-              <div className="text-3xl text-pretty">
+              <div className="p-2 text-xl xsm:text-2xl sm:text-3xl text-pretty">
                 <h1 className="text-center text-primary-pLabel tracking-wider">
                   We are sharing our deep passion
                   <br />
@@ -91,7 +91,7 @@ const PageHome: React.FC = () => {
               </div>
 
               <div className="w-full px-3 flex flex-col gap-10 items-center justify-center screen_var_one:px-10 screen_var_one:flex-row">
-                <div className="screen_var_one:w-[50%] text-base">
+                <div className="w-3/4 screen_var_one:w-[50%] text-base">
                   Journey towards a world where healthcare isn't a
                   privilege—it's a right. Together, let's rewrite the script of
                   pharmaceuticals and create a future where equality isn't just

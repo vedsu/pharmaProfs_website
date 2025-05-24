@@ -72,14 +72,14 @@ const PageFAQ: React.FC = () => {
   ];
 
   return (
-    <div className="page-margin min-h-[60vh]">
-      <div className="w-full py-5">
+    <div className="page-margin w-full ">
+      <div className="px-10 py-5 w-full screen_var_one:px-0">
         <h4 className="font-semibold text-2xl text-primary-pTextTeal ">FAQ</h4>
         <p className="text-sm font-semibold text-primary-pText">
           Here are answers to some of our most common questions.
         </p>
       </div>
-      <div className="p-5 w-full flex flex-col gap-2 items-center justify-center ">
+      <div className="px-10 py-5 w-full flex flex-col gap-2 items-center justify-center screen_var_one:px-0">
         <h4 className="font-semibold text-2xl text-primary-pText">
           Frequently asked questions
         </h4>
@@ -93,7 +93,7 @@ const PageFAQ: React.FC = () => {
           <span className="mx-1">and we'll help you.</span>
         </p>
       </div>
-      <section className="py-5 flex flex-col items-center justify-center gap-5">
+      <section className="px-10 py-5 flex flex-col items-center justify-center gap-5 screen_var_one:px-0">
         <AccordionCustom
           accordionData={accordionData}
           accordionTabClassName={

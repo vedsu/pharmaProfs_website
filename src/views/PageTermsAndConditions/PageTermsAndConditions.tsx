@@ -42,19 +42,19 @@ const PageTermsAndConditions: React.FC = () => {
   ];
 
   return (
-    <div className="page-margin  min-h-[60vh]">
-      <section className="py-5 flex flex-col items-center justify-center gap-5">
+    <div className="page-margin w-full ">
+      <section className="px-10 py-5 flex flex-col items-center justify-center gap-5 screen_var_one:px-0">
         <div className="flex flex-col gap-5 text-sm">
           <div className="flex flex-col text-left">
             <h4 className="mb-1 font-semibold text-2xl text-primary-pTextTeal ">
-              {"Terms & Conditions"}
+              Terms & Conditions
             </h4>
             <div className="text-base font-semibold leading-6">
-              <p className="mb-1">{"Welcome to Pharma Profs !"}</p>
+              <p className="mb-1">Welcome to Pharma Profs !</p>
               <p className="text-sm font-normal">
-                {
-                  "Before diving in, please take a moment to familiarize yourself with our Terms & Conditions. By using this site, you agree to abide by the guidelines outlined below"
-                }
+                Before diving in, please take a moment to familiarize yourself
+                with our Terms & Conditions. By using this site, you agree to
+                abide by the guidelines outlined below
               </p>
             </div>
           </div>
@@ -76,7 +76,7 @@ const PageTermsAndConditions: React.FC = () => {
 
           <div>
             <p className="font-semibold text-sm">
-              {"Thank you for being part of Pharma Profs. Enjoy exploring !"}
+              Thank you for being part of Pharma Profs. Enjoy exploring !
             </p>
           </div>
         </div>

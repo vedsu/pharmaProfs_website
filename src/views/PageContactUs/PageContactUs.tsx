@@ -1,5 +1,6 @@
+import React, { BaseSyntheticEvent, ReactNode, useRef, useState } from "react";
 import { InputTextarea } from "primereact/inputtextarea";
-import React, { BaseSyntheticEvent, ReactNode, useState } from "react";
+import SimpleReactValidator from "simple-react-validator";
 import ButtonCustom from "../../components/ButtonCustom";
 import DialogCustom from "../../components/DialogCustom";
 import Input from "../../components/Input";
@@ -17,6 +18,16 @@ const PageContactUs: React.FC = () => {
   const [formContactUsData, setFormContactUsData] = useState(
     initialContactUsFormData
   );
+  const [showContactUsPopUp, setShowContactUsPopUp] = useState({
+    isSuccess: false,
+    showPopUp: false,
+    headerContent: <div />,
+    bodyContent: <div />,
+  });
+  const simpleValidator = useRef(
+    new SimpleReactValidator({ className: "text-danger" })
+  );
+  const [_, forceUpdate] = useState<any>();
 
   const handleContactUsFormChange = (e: BaseSyntheticEvent) => {
     setFormContactUsData((prev) => {
@@ -28,6 +39,13 @@ const PageContactUs: React.FC = () => {
   };
 
   const onSubmitContactUsForm = async () => {
+    const formValid = simpleValidator.current.allValid();
+    if (!formValid) {
+      simpleValidator.current.showMessages();
+      forceUpdate("");
+      return;
+    }
+
     const payload = {
       name: formContactUsData.name,
       email: formContactUsData.email,
@@ -37,7 +55,17 @@ const PageContactUs: React.FC = () => {
     try {
       const res = await ContactUsService.contactUs(payload);
       if (validatePostRequest(res)) {
-        console.log(res);
+        setShowContactUsPopUp({
+          isSuccess: true,
+          showPopUp: true,
+          headerContent: <h1 className="text-2xl" />,
+          bodyContent: (
+            <div className="p-5">
+              <p>{res?.data?.Message}.</p>
+            </div>
+          ),
+        });
+        setShowContactFormDialog(false);
       }
     } catch (error) {
       console.error(error);
@@ -59,8 +87,15 @@ const PageContactUs: React.FC = () => {
             value={name}
             handler={handleContactUsFormChange}
             mandatory
+            onBlur={() => {
+              simpleValidator.current.showMessageFor("name");
+            }}
+            validationMessage={simpleValidator.current.message(
+              "name",
+              name,
+              "required"
+            )}
           />
-          {/* <small></small> */}
         </div>
         <div className="px-2">
           <Input
@@ -71,14 +106,19 @@ const PageContactUs: React.FC = () => {
             value={email}
             handler={handleContactUsFormChange}
             mandatory
+            onBlur={() => {
+              simpleValidator.current.showMessageFor("email");
+            }}
+            validationMessage={simpleValidator.current.message(
+              "email",
+              email,
+              "required|email"
+            )}
           />
-          {/* <small></small> */}
         </div>
+
         <div className="px-2 flex flex-col gap-1">
-          <label>
-            {"Message"}
-            <span className="text-primary-asterisk">*</span>
-          </label>
+          <label>{"Message"}</label>
           <InputTextarea
             className={"w-full min-h-40 p-2 border border-primary-light-900"}
             name="message"
@@ -86,12 +126,11 @@ const PageContactUs: React.FC = () => {
             onChange={handleContactUsFormChange}
             maxLength={5000}
           />
-          {/* <small>{"validationMessage"}</small> */}
         </div>
 
-        <div className="self-center">
+        <div className="w-full self-center">
           <ButtonCustom
-            className="w-32 px-2 flex gap-2 justify-center text-primary-pTextLight bg-primary-bg-teal border border-primary-light-900 rounded-full hover:bg-primary-bg-lightTeal"
+            className="w-full px-2 py-1 flex gap-2 justify-center text-primary-pTextLight bg-primary-bg-teal border border-primary-light-900 rounded-full hover:bg-primary-bg-lightTeal"
             label={"Submit"}
             handleClickWithLoader={onSubmitContactUsForm}
           />
@@ -101,8 +140,8 @@ const PageContactUs: React.FC = () => {
   };
 
   return (
-    <div className="page-margin  min-h-[60vh]">
-      <section className="py-5 flex flex-col items-center justify-center">
+    <div className="page-margin w-full">
+      <section className="px-10 py-5 flex flex-col items-center justify-center screen_var_one:px-0">
         <div className="flex flex-col gap-5">
           <div className="mb-1 w-full text-left">
             <h4 className="font-semibold text-2xl text-primary-pTextTeal ">
@@ -129,20 +168,33 @@ const PageContactUs: React.FC = () => {
               </p>
             </div>
 
-            <div className="px-5">
-              <div className="text-base font-normal leading-8">
-                <span>We are here to assist you</span>
-                <br />
-                <p className="text-primary-pLabel">Call Us</p>
-                <p className="text-sm">xxxxxxxxx</p>
-                <p className="text-primary-pLabel">Email Us</p>
-                <p className="text-sm">support@profscompliance.com</p>
+            <div className="flex flex-col gap-2 p-5">
+              <div>We are here to assist you</div>
+
+              <div className="flex flex-col items-stretch gap-5 screen_var_one:flex-row  screen_var_one:gap-20 text-base font-normal leading-8">
+                <div className="w-full border border-primary-light-900 p-5 rounded-lg bg-primary-light-100">
+                  <p className="text-primary-pLabel">Call Us</p>
+                  <p className="text-sm">+1-302-803-4775</p>
+                  <p className="text-primary-pLabel">Email Us</p>
+                  <p className="text-sm">support@profscompliance.com</p>
+                </div>
+
+                <div className="w-full border border-primary-light-900 p-5 rounded-lg bg-primary-light-100">
+                  <p className="text-primary-pLabel">
+                    Address:
+                    <br />
+                    Pharma Profs <br />
+                    2438 Industrial Blvd #802 <br />
+                    Abilene
+                    <br /> TX 79605
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div>
+            <div className="w-full sm:w-64 self-center">
               <button
-                className="px-5 h-8 border border-primary-light-900 rounded-full bg-primary-bg-teal text-primary-pTextLight"
+                className="w-full px-2 py-1 flex gap-2 justify-center border border-primary-light-900 rounded-full bg-primary-bg-teal text-primary-pTextLight  hover:bg-primary-bg-lightTeal"
                 onClick={() => setShowContactFormDialog(true)}
               >
                 Contact Us
@@ -155,7 +207,7 @@ const PageContactUs: React.FC = () => {
       <DialogCustom
         dialogVisible={showContactFormDialog}
         containerClassName={
-          "max-w-[668px] p-5 border border-primary-light-900 rounded-lg bg-white"
+          "w-full screen_var_one:min-w-[500px] p-5 border border-primary-light-900 rounded-lg bg-white"
         }
         headerTemplate={<h1 className="text-2xl">Contact Us</h1>}
         headerTemplateClassName={`flex items-center justify-center`}
@@ -163,6 +215,19 @@ const PageContactUs: React.FC = () => {
         onHideDialog={() => {
           if (!showContactFormDialog) return;
           setShowContactFormDialog(false);
+        }}
+      />
+
+      <DialogCustom
+        dialogVisible={showContactUsPopUp.showPopUp}
+        containerClassName={
+          "max-w-[500px] p-5 border border-primary-light-900 rounded-lg bg-white"
+        }
+        headerTemplate={showContactUsPopUp.headerContent}
+        headerTemplateClassName={`flex items-center justify-center`}
+        bodyTemplate={showContactUsPopUp.bodyContent}
+        onHideDialog={() => {
+          setShowContactUsPopUp((prev) => ({ ...prev, showPopUp: false }));
         }}
       />
     </div>

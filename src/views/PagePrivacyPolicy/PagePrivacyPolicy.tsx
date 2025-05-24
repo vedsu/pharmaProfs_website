@@ -20,17 +20,18 @@ const PagePrivacyPolicy: React.FC = () => {
   ];
 
   return (
-    <div className="page-margin  min-h-[60vh]">
-      <section className="py-5 flex flex-col items-center justify-center gap-5">
+    <div className="page-margin w-full">
+      <section className="px-10 py-5 flex flex-col items-center justify-center gap-5 screen_var_one:px-0">
         <div className="flex flex-col gap-5 text-sm">
           <div className="text-left">
-            <h4 className="mb-1 font-semibold text-2xl text-primary-pTextTeal ">
+            <h4 className="mb-1 font-semibold text-2xl text-primary-pLabel">
               Privacy Policy
             </h4>
             <p className="text-sm font-semibold leading-6">
-              {
-                "At Pharma Profs, safeguarding your privacy is at the core of our values. Here's how we're committed to protecting your data"
-              }
+              At Pharma Profs, safeguarding your privacy is at the core of our
+              values.
+              <br />
+              Here's how we're committed to protecting your data.
             </p>
           </div>
 

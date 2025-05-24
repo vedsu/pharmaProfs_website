@@ -53,6 +53,8 @@ export default {
         disabled: "#c2c2c2",
       },
       screens: {
+        xsm: "400px",
+
         sm: "640px",
         // => @media (min-width: 640px) { ... }
 
