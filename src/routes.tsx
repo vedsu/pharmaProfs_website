@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { lazy, Suspense } from "react";
 import { RouteObject } from "react-router-dom";
 import InterfaceError from "./components/InterfaceError";
@@ -8,6 +7,9 @@ export const LINK_HOME = "/";
 export const LINK_PAGE_WEBINAR_LISTING = "/webinars";
 export const LINK_PAGE_LOGIN_REG = "/login-reg";
 export const LINK_PAGE_SPEAKERS = "/speakers";
+export const LINK_PAGE_SPEAKER_OPPORTUNITY = "/speaker-opportunity";
+export const LINK_PAGE_RESOURCES = "/resources";
+export const LINK_PAGE_NEWSLETTERS = LINK_PAGE_RESOURCES + "/newsletters";
 export const LINK_PAGE_ABOUT_US = "/about-us";
 export const LINK_PAGE_FAQ = "/faq";
 export const LINK_PAGE_CONTACT_US = "/contact-us";
@@ -25,6 +27,9 @@ export const LINK_PAGE_CONFIRM_PAYMENT = "/confirm-payment";
 export const LINK_BASE_DASHBOARD = "/dashboard";
 export const LINK_ATTENDEE_DASHBOARD = LINK_BASE_DASHBOARD + "/attendee";
 export const LINK_SPEAKER_DASHBOARD = LINK_BASE_DASHBOARD + "/speaker";
+export const LINK_ATTENDEE_RECOMMENDATIONS =
+  LINK_BASE_DASHBOARD + "/recommendations";
+export const LINK_USER_HISTORY = LINK_BASE_DASHBOARD + "/history";
 
 /*---------------------Unauthorized Page-------------------------*/
 export const LINK_UNAUTHORIZED_DASHBOARD =
@@ -41,6 +46,9 @@ const PageWebinarList = lazy(() => import("./views/PageWebinarList"));
 const PageWebinarInfo = lazy(() => import("./views/PageWebinarInfo"));
 const PageSpeakers = lazy(() => import("./views/PageSpeakers"));
 const PageSpeakerInfo = lazy(() => import("./views/PageSpeakerInfo"));
+const PageSpeakerOpportunity = lazy(
+  () => import("./views/PageSpeakerOpportunity")
+);
 const PageAboutUs = lazy(() => import("./views/PageAboutUs"));
 const PageFAQ = lazy(() => import("./views/PageFAQ"));
 const PageContactUs = lazy(() => import("./views/PageContactUs"));
@@ -59,7 +67,9 @@ const PageCart = lazy(() => import("./views/PageCart"));
 const PageCheckout = lazy(() => import("./views/PageCheckout"));
 const PageConfirmPayment = lazy(() => import("./views/PageConfirmPayment"));
 const PageForgotPassword = lazy(() => import("./views/PageForgotPassword"));
-const PageUnauthorized = lazy(() => import("./views/PageUnauthorized"));
+const PageUnauthorized = lazy(
+  () => import("./views/PageUnauthorized/PageUnauthorized")
+);
 
 const ppWebsiteChildrenRoutes = [
   {
@@ -81,6 +91,10 @@ const ppWebsiteChildrenRoutes = [
   {
     path: `${LINK_PAGE_SPEAKERS}/:speakerId`,
     element: <PageSpeakerInfo />,
+  },
+  {
+    path: LINK_PAGE_SPEAKER_OPPORTUNITY,
+    element: <PageSpeakerOpportunity />,
   },
   {
     path: LINK_PAGE_LOGIN_REG,

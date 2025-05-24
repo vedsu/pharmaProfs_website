@@ -1,6 +1,6 @@
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
-import { BaseSyntheticEvent, ReactNode, useState } from "react";
+import { BaseSyntheticEvent, ReactNode, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import brandLogo from "../assets/images/pp_brand_logo.png";
 import {
@@ -9,6 +9,7 @@ import {
   LINK_PAGE_FAQ,
   LINK_PAGE_PRIVACY_POLICY,
   LINK_PAGE_REFUND_AND_CANCELLATION,
+  LINK_PAGE_SPEAKER_OPPORTUNITY,
   LINK_PAGE_TERMS_AND_CONDITIONS,
 } from "../routes";
 import SubscriptionService from "../services/SubscriptionService";
@@ -16,6 +17,7 @@ import { validatePostRequest } from "../utils/commonUtils";
 import ButtonCustom from "./ButtonCustom";
 import DialogCustom from "./DialogCustom";
 import Input from "./Input";
+import SimpleReactValidator from "simple-react-validator";
 
 const initialSpeakerFormData = {
   name: "",
@@ -30,45 +32,51 @@ const initialSpeakerFormData = {
 const Footer = () => {
   const currYear = new Date().getFullYear();
 
-  const [showSpeakerOpportunityForm, setShowSpeakerOpportunityForm] =
-    useState(false);
-  const [speakerFormData, setSpeakerFormData] = useState(
-    initialSpeakerFormData
-  );
-
   const [showUnsubscribeForm, setShowUnsubscribeForm] = useState(false);
   const [formUnsubscribeData, setFormUnsubscribeData] = useState({
     email: "",
   });
+  const [speakerFormData, setSpeakerFormData] = useState(
+    initialSpeakerFormData
+  );
+  const [showUnsubscribePopUp, setShowUnsubscribePopUp] = useState({
+    isSuccess: false,
+    showPopUp: false,
+    headerContent: <div />,
+    bodyContent: <div />,
+  });
+  const simpleValidator = useRef(
+    new SimpleReactValidator({ className: "text-danger" })
+  );
+  const [_, forceUpdate] = useState<any>();
+
   /*------------Event Handlers----------- */
-  const onClickSpeakerOpportunity = () => {
-    setShowSpeakerOpportunityForm(true);
-  };
-
-  const handleSpeakerFormInputChange = (e: BaseSyntheticEvent) => {
-    setSpeakerFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-  const handleIndustryChange = (e: DropdownChangeEvent) => {
-    setSpeakerFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.value,
-    }));
-  };
-
-  const onSubmitSpeakerOpportunityForm = () => {
-    //
-  };
 
   const onSubmitUnsubscribeForm = async () => {
+    const formValid = simpleValidator.current.allValid();
+    if (!formValid) {
+      simpleValidator.current.showMessages();
+      forceUpdate("");
+      return;
+    }
+
     const payload = {
-      email: formUnsubscribeData.email,
+      Unsubscriber: formUnsubscribeData.email,
     };
+
     try {
       const res = await SubscriptionService.unsubscribe(payload);
       if (validatePostRequest(res)) {
+        setShowUnsubscribePopUp({
+          isSuccess: true,
+          showPopUp: true,
+          headerContent: <h1 className="text-2xl" />,
+          bodyContent: (
+            <div className="p-5">
+              <p>You have {res?.data?.message}.</p>
+            </div>
+          ),
+        });
         setShowUnsubscribeForm(false);
         setFormUnsubscribeData({ email: "" });
       }
@@ -79,98 +87,10 @@ const Footer = () => {
 
   /*--------------Sectional Renders---------------- */
 
-  const renderSpeakerFormDialogHeader = (): ReactNode => {
-    return <h1 className="text-2xl">Speaker Opportunity</h1>;
-  };
-
-  const renderSpeakerFormDialog = (): ReactNode => {
-    const { name, email, education, phone, bio } = speakerFormData;
-
-    return (
-      <div className="py-2 px-5 flex items-center justify-center">
-        <div className="w-full flex flex-col gap-2 text-sm">
-          <div className="grid grid-cols-2 gap-5">
-            <Input
-              className="col-span-1"
-              name={"name"}
-              label={"Name"}
-              value={name}
-              handler={handleSpeakerFormInputChange}
-            />
-            <Input
-              className="col-span-1"
-              name={"email"}
-              label={"Email"}
-              type={"email"}
-              value={email}
-              handler={handleSpeakerFormInputChange}
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-5">
-            <Input
-              className="col-span-1"
-              name={"education"}
-              label={"Education"}
-              value={education}
-              handler={handleSpeakerFormInputChange}
-            />
-            <Input
-              className="col-span-1"
-              name={"phone"}
-              label={"Contact"}
-              value={phone}
-              handler={handleSpeakerFormInputChange}
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label>{"Industry"}</label>
-            <Dropdown
-              className="p-2 w-full border border-primary-light-900 text-gray-500 text-xs"
-              name="industry"
-              placeholder="Select Industry"
-              options={[{ label: "Option1", value: "val1" }]}
-              optionLabel="label"
-              optionValue="value"
-              value={""}
-              onChange={handleIndustryChange}
-            />
-            {/* <small>{"validationMessage"}</small> */}
-          </div>
-
-          <div className="w-full flex flex-col gap-1">
-            <label>{"Bio"}</label>
-            <InputTextarea
-              className={"w-full min-h-40 p-2 border border-primary-light-900"}
-              name="bio"
-              value={bio}
-              onChange={handleSpeakerFormInputChange}
-              maxLength={5000}
-            />
-            {/* <small>{"validationMessage"}</small> */}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderSpeakerFormDialogFooter = (): ReactNode => {
-    return (
-      <div className="mt-5 w-full flex items-center justify-center">
-        <ButtonCustom
-          className="w-32 px-2 flex gap-2 justify-center text-primary-pTextLight bg-primary-bg-teal border border-primary-light-900 rounded-full hover:bg-primary-bg-lightTeal"
-          label={"Submit"}
-          handleClickWithLoader={onSubmitSpeakerOpportunityForm}
-        />
-      </div>
-    );
-  };
-
   const renderUnSubscribeDialog = (): ReactNode => {
     const { email } = formUnsubscribeData;
     return (
-      <div className="pt-5 flex flex-col">
+      <div className="pt-5 flex flex-col gap-5">
         <div className="px-2">
           <Input
             className=""
@@ -182,8 +102,15 @@ const Footer = () => {
               setFormUnsubscribeData({ email: e.target.value })
             }
             mandatory
+            onBlur={() => {
+              simpleValidator.current.showMessageFor("email");
+            }}
+            validationMessage={simpleValidator.current.message(
+              "email",
+              email,
+              "required|email"
+            )}
           />
-          {/* <small></small> */}
         </div>
         <div className="self-center">
           <ButtonCustom
@@ -199,43 +126,101 @@ const Footer = () => {
   return (
     <footer className="pp-footer text-primary-pText">
       <div className="footer-nav-wrapper py-5">
-        <div className="w-64 flex items-center justify-center">
+        {/* <div className="w-64 flex items-center justify-center">
           <img className="" src={brandLogo} alt="logo" />
-        </div>
+        </div> */}
 
-        <div className="mt-6 flex gap-10 justify-between text-sm">
-          <div className="footer-social-group gap-4 font-normal text-xs">
+        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 screen_var_one:grid-cols-3 xl:grid-cols-4 text-sm">
+          <div className="footer-links flex flex-col place-items-center screen_var_one:place-items-start">
+            <div className="pb-3">
+              <h3 className="text-primary-bg-purple text-lg">Get To Know Us</h3>
+            </div>
+
+            <Link to={LINK_PAGE_PRIVACY_POLICY}>Privacy Policy</Link>
+            <Link to={LINK_PAGE_TERMS_AND_CONDITIONS}>Terms & Conditions</Link>
+            <Link to={LINK_PAGE_REFUND_AND_CANCELLATION}>
+              Refund & Cancellation
+            </Link>
+          </div>
+
+          <div className="footer-links flex flex-col place-items-center screen_var_one:place-items-start">
+            <div className="pb-3">
+              <h3 className="text-primary-bg-purple text-lg">Useful Links</h3>
+            </div>
+            <Link to={LINK_PAGE_CONTACT_US}>Contact Us</Link>
+            <Link to={LINK_PAGE_ABOUT_US}>About Us</Link>
+            <Link to={LINK_PAGE_FAQ}>FAQ's</Link>
+          </div>
+
+          <div className="footer-links flex flex-col place-items-center screen_var_one:place-items-start">
+            <div className="pb-3">
+              <h3 className="text-primary-bg-purple text-lg">
+                Let Us Help You
+              </h3>
+            </div>
+
+            <div className="mb-4 text-left">
+              <Link to={LINK_PAGE_SPEAKER_OPPORTUNITY}>
+                Speaker's Opportunity
+              </Link>
+            </div>
+
+            <button
+              className="mb-4 text-left"
+              onClick={() => {
+                setShowUnsubscribeForm(true);
+              }}
+            >
+              <a>UnSubscribe</a>
+            </button>
+
+            <p className="org-address">
+              Pharma Profs,
+              <br />
+              2438 Industrial Blvd #802,
+              <br />
+              Abilene, TX 79605,
+              <br />
+              Contact Us: +1-302-803-4775
+            </p>
+          </div>
+
+          <div className="footer-social-group font-normal text-xs">
+            <div className="pb-3">
+              <h3 className="text-primary-bg-purple text-lg">Follow Us</h3>
+            </div>
+
             <div className="flex gap-4 text-white text-sm">
               <a
-                className="pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
+                className="social-favicon pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
                 href="https://www.linkedin.com/company/pharma-profs"
                 target="_blank"
               >
                 <i className="pi pi-linkedin"></i>
               </a>
               <a
-                className="pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
+                className="social-favicon pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
                 href="https://x.com"
                 target="_blank"
               >
                 <i className="pi pi-twitter"></i>
               </a>
               <a
-                className="pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
+                className="social-favicon pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
                 href="https://www.youtube.com/@PharmaProfs"
                 target="_blank"
               >
                 <i className="pi pi-youtube"></i>
               </a>
               <a
-                className="pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
+                className="social-favicon pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
                 href="https://www.facebook.com/people/Pharma-Profs/61561140721641"
                 target="_blank"
               >
                 <i className="pi pi-facebook"></i>
               </a>
               <a
-                className="pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
+                className="social-favicon pt-[1px] inline-block w-8 h-8 text-center leading-8 rounded-full"
                 href="#"
                 target="_blank"
               >
@@ -243,82 +228,22 @@ const Footer = () => {
               </a>
             </div>
 
-            <div className="mb-4 font-normal text-sm">
-              <p>
-                We are shaping the next generation of medical professionals.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex justify-between">
-            <div className="footer-links flex flex-col justify-start">
-              <button
-                className="mb-4 text-left"
-                onClick={() => {
-                  setShowUnsubscribeForm(true);
-                }}
-              >
-                <a>UnSubscribe</a>
-              </button>
-              <Link to={LINK_PAGE_PRIVACY_POLICY}>Privacy Policy</Link>
-              <Link to={LINK_PAGE_TERMS_AND_CONDITIONS}>
-                Terms & Conditions
-              </Link>
-              <Link to={LINK_PAGE_REFUND_AND_CANCELLATION}>
-                Refund & Cancellation
-              </Link>
-            </div>
-
-            <div className="footer-links flex flex-col justify-start">
-              <Link to={LINK_PAGE_CONTACT_US}>Contact Us</Link>
-              <Link to={LINK_PAGE_ABOUT_US}>About Us</Link>
-              <Link to={LINK_PAGE_FAQ}>FAQ's</Link>
-            </div>
-
-            <div className="footer-links flex flex-col justify-start">
-              <button
-                className="mb-4 text-left"
-                onClick={onClickSpeakerOpportunity}
-              >
-                <a>Speaker's Opportunity</a>
-              </button>
-
-              <Link to="#" />
-              <p className="org-address">
-                <span className="inline-block w-full">Pharma Profs,</span>
-                <span className="inline-block w-full">
-                  2438 Industrial Blvd #802,
-                </span>
-                <span className="inline-block w-full">Abilene, TX 79605,</span>
-                <span className="inline-block w-full">
-                  Contact Us: +1-302-803-4775
-                </span>
+            <div className="my-3 font-medium text-sm">
+              <p className="text-center">
+                We are shaping the next generation
+                <br />
+                of medical professionals.
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      <hr className="w-3/4 mx-auto border-2 border-white" />
+      <hr className="border-2 border-white" />
 
-      <div className="py-4 text-center">
+      <div className="py-4 text-center text-xs">
         <p>© {currYear} Copyright PharmaProfs. All Rights Reserved</p>
       </div>
-
-      <DialogCustom
-        dialogVisible={showSpeakerOpportunityForm}
-        containerClassName={
-          "max-w-[668px] p-5 border border-primary-light-900 rounded-lg bg-white"
-        }
-        headerTemplate={renderSpeakerFormDialogHeader()}
-        headerTemplateClassName={`flex items-center justify-center`}
-        bodyTemplate={renderSpeakerFormDialog()}
-        footerTemplate={renderSpeakerFormDialogFooter()}
-        onHideDialog={() => {
-          if (!showSpeakerOpportunityForm) return;
-          setShowSpeakerOpportunityForm(false);
-        }}
-      />
 
       <DialogCustom
         dialogVisible={showUnsubscribeForm}
@@ -331,6 +256,19 @@ const Footer = () => {
         onHideDialog={() => {
           if (!showUnsubscribeForm) return;
           setShowUnsubscribeForm(false);
+        }}
+      />
+
+      <DialogCustom
+        dialogVisible={showUnsubscribePopUp.showPopUp}
+        containerClassName={
+          "max-w-[500px] p-5 border border-primary-light-900 rounded-lg bg-white"
+        }
+        headerTemplate={showUnsubscribePopUp.headerContent}
+        headerTemplateClassName={`flex items-center justify-center`}
+        bodyTemplate={showUnsubscribePopUp.bodyContent}
+        onHideDialog={() => {
+          setShowUnsubscribePopUp((prev) => ({ ...prev, showPopUp: false }));
         }}
       />
     </footer>
