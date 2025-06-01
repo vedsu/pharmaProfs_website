@@ -49,6 +49,8 @@ const PageSpeakerInfo = lazy(() => import("./views/PageSpeakerInfo"));
 const PageSpeakerOpportunity = lazy(
   () => import("./views/PageSpeakerOpportunity")
 );
+const PageNewsletters = lazy(() => import("./views/PageNewsletters"));
+const PageNewsletterInfo = lazy(() => import("./views/PageNewsletterInfo"));
 const PageAboutUs = lazy(() => import("./views/PageAboutUs"));
 const PageFAQ = lazy(() => import("./views/PageFAQ"));
 const PageContactUs = lazy(() => import("./views/PageContactUs"));
@@ -63,13 +65,15 @@ const PageSpeakerDashboard = lazy(() => import("./views/PageSpeakerDashboard"));
 const PageAttendeeDashboard = lazy(
   () => import("./views/PageAttendeeDashboard")
 );
+const PageUserHistory = lazy(() => import("./views/PageUserHistory"));
+const PageAttendeeRecommendations = lazy(
+  () => import("./views/PageAttendeeRecommendations")
+);
 const PageCart = lazy(() => import("./views/PageCart"));
 const PageCheckout = lazy(() => import("./views/PageCheckout"));
 const PageConfirmPayment = lazy(() => import("./views/PageConfirmPayment"));
 const PageForgotPassword = lazy(() => import("./views/PageForgotPassword"));
-const PageUnauthorized = lazy(
-  () => import("./views/PageUnauthorized/PageUnauthorized")
-);
+const PageUnauthorized = lazy(() => import("./views/PageUnauthorized"));
 
 const ppWebsiteChildrenRoutes = [
   {
@@ -99,6 +103,16 @@ const ppWebsiteChildrenRoutes = [
   {
     path: LINK_PAGE_LOGIN_REG,
     element: <PageLoginOrRegister />,
+  },
+  {
+    path: LINK_PAGE_NEWSLETTERS,
+
+    element: <PageNewsletters />,
+  },
+  {
+    path: `${LINK_PAGE_NEWSLETTERS}/:newsletterId`,
+
+    element: <PageNewsletterInfo />,
   },
   {
     path: LINK_PAGE_ABOUT_US,
@@ -131,6 +145,16 @@ const ppWebsiteChildrenRoutes = [
   {
     path: LINK_ATTENDEE_DASHBOARD,
     element: <PageAttendeeDashboard />,
+  },
+  {
+    path: LINK_USER_HISTORY,
+
+    element: <PageUserHistory />,
+  },
+  {
+    path: LINK_ATTENDEE_RECOMMENDATIONS,
+
+    element: <PageAttendeeRecommendations />,
   },
   {
     path: LINK_PAGE_CART,

@@ -314,7 +314,7 @@ const PageWebinarList: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-3 w-full flex gap-3 flex-wrap items-center justify-between bg-secondary-sBlue text-primary-light-200">
+                <div className="p-3 w-full flex gap-3 flex-wrap items-center justify-between bg-primary-bg-lightCyan text-primary-pText">
                   <div className="text-xs">
                     <span>{monDayYear(webinar?.date) ?? "N.A"}</span>
                     <span className="mx-1">
