@@ -397,7 +397,7 @@ nav {
   display: flex;
   flex-direction: column;
   color: #faf9f6;
-  background: #f3f1f2;
+  background: #faf8fd;
 }
 
 /*-----------------------------Website Footer--------------------------------------*/
@@ -804,7 +804,7 @@ input[type="checkbox"] {
     display: block;
   }
 
-  .hc-prof-login-wrapper {
+  .pp-login-wrapper {
     padding: 40px 5px;
   }
 

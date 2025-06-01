@@ -14,7 +14,8 @@ import {
 const PageAttendeeDashboard = () => {
   const navigate = useNavigate();
 
-  const [attendeeDashboardData, setAttendeeDashboardInfo] = useState([]);
+  const [profileInfo, setProfileInfo] = useState<any>({});
+  const [attendeeDashboardData, setAttendeeDashboardInfo] = useState<any[]>([]);
   const [
     attendeeDashboardHistoryPurchased,
     setAttendeeDashboardHistoryPurchased,
@@ -22,21 +23,69 @@ const PageAttendeeDashboard = () => {
   const [attendeeDashboardHistoryPending, setAttendeeDashboardHistoryPending] =
     useState([]);
   const [
+    attendeeDashboardNewsletterPurchased,
+    setAttendeeDashboardNewsletterPurchased,
+  ] = useState([]);
+
+  const [
     attendeeDashboardRecommendations,
     setAttendeeDashboardRecommendations,
   ] = useState([]);
+
   const [loadingRecommendations, setLoadingRecommendations] = useState(true);
 
   const accordionTemplateData = [
     {
+      title: "Profile",
+      description: (
+        <React.Fragment>
+          <div className="py-3 px-5 font-normal text-sm">
+            <div>
+              <span className="mr-1 font-semibold">Name:</span>
+              <span>{profileInfo?.name ?? "N.A"}</span>
+            </div>
+            <div>
+              <span className="mr-1 font-semibold">Email:</span>
+              <span>{profileInfo?.email ?? "N.A"}</span>
+            </div>
+            <div>
+              <span className="mr-1 font-semibold">Role:</span>
+              <span>{profileInfo?.jobProfile ?? "N.A"}</span>
+            </div>
+            <div>
+              <span className="mr-1 font-semibold">Contact:</span>
+              <span>{profileInfo?.contact ?? "N.A"}</span>
+            </div>
+          </div>
+        </React.Fragment>
+      ),
+    },
+    {
       title: "History",
       description: (
         <React.Fragment>
+          <div className="px-2 flex flex-col">
+            <div>
+              <div className="my-2 text-left font-semibold text-sm">
+                <div className="px-2">{`Purchased newsletter(s)`}</div>
+              </div>
+              <ul className="text-sm font-normal">
+                {attendeeDashboardNewsletterPurchased?.map(
+                  (newsletterPurchased: any, idx: number) => (
+                    <li key={idx + 1} className="my-2 px-2">
+                      <span>◈ {newsletterPurchased}</span>
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+          </div>
+
           {attendeeDashboardHistoryPurchased?.length ? (
             <div className="px-2 flex flex-col gap-5">
               <div>
                 <div className="my-2 text-left font-semibold text-sm">
-                  <div className="px-2">Purchased</div>
+                  <div className="px-2">{`Purchased webinar(s)`}</div>
                 </div>
                 <ul className="text-sm font-normal">
                   {attendeeDashboardHistoryPurchased?.map(
@@ -51,7 +100,7 @@ const PageAttendeeDashboard = () => {
               {attendeeDashboardHistoryPending?.length ? (
                 <div>
                   <div className="my-2 text-left font-semibold text-sm">
-                    <div className="px-2">Pending</div>
+                    <div className="px-2">{`Pending webinar(s)`}</div>
                   </div>
                   <ul className="text-sm font-normal">
                     {attendeeDashboardHistoryPending?.map(
@@ -88,9 +137,9 @@ const PageAttendeeDashboard = () => {
                   {attendeeDashboardRecommendations?.map(
                     (recommendation: any) => (
                       <div
-                        key={recommendation?.webinarUrl}
+                        key={recommendation?.webinarId}
                         onClick={() =>
-                          onClickRecommendation(recommendation?.webinarUrl)
+                          onClickRecommendation(recommendation?.webinarId)
                         }
                       >
                         <div className="card-scale card-scale-bg my-2 p-4 border-2 border-primary-light-900 rounded-lg flex flex-col gap-1 text-sm">
@@ -154,9 +203,14 @@ const PageAttendeeDashboard = () => {
       try {
         const res = await DashboardService.getUserDashboardInfo(path);
         if (validateGetRequest(res)) {
-          setAttendeeDashboardInfo(res?.data?.[0]);
+          //profile info
+          setProfileInfo(userInfo);
+          //webinar and newsletter info
+          setAttendeeDashboardInfo([...res?.data?.[0], ...res?.data?.[3]]);
+          //other necessary information
           setAttendeeDashboardHistoryPending(res?.data?.[1]);
           setAttendeeDashboardHistoryPurchased(res?.data?.[2]);
+          setAttendeeDashboardNewsletterPurchased(res?.data[4]);
         }
       } catch (error) {
         console.error(error);
@@ -182,6 +236,7 @@ const PageAttendeeDashboard = () => {
             industry: webinar?.industry,
             date: webinar?.date,
             webinarUrl: webinar?.webinar_url,
+            webinarId: webinar?.id,
           };
         });
         setAttendeeDashboardRecommendations(recommendations);
@@ -193,12 +248,12 @@ const PageAttendeeDashboard = () => {
   };
 
   /*----------------------Events Handlers-------------------*/
-  const onClickListCard = (e: any) => {
-    console.log(e);
+  const onClickListCard = () => {
+    //
   };
 
-  const onClickRecommendation = (webinarUrl: string) => {
-    navigate(LINK_PAGE_WEBINAR_LISTING + "/" + webinarUrl);
+  const onClickRecommendation = (webinarId: string) => {
+    navigate(LINK_PAGE_WEBINAR_LISTING + "/" + webinarId);
   };
 
   /*-------------------Main Render------------------------*/
@@ -206,7 +261,7 @@ const PageAttendeeDashboard = () => {
   return (
     <UserDashboardLayout
       userInterfaceData={{
-        webinarData: attendeeDashboardData,
+        dashboardData: attendeeDashboardData,
         onClickWebinarCardHandler: onClickListCard,
         accordionTemplateData: accordionTemplateData,
       }}

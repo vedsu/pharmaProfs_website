@@ -32,7 +32,7 @@ const AccordionCustom = (props: IAccordionCustomProps) => {
                   <div className="accordion-header-title">
                     {accordionInfo?.title ?? ""}
                   </div>
-                  <p className="chevron"></p>
+                  <div className="chevron"></div>
                 </div>
               }
               headerClassName={`bg-transparent text-primary-pSlateGray text-base font-bold ${accordionHeaderClassName}`}

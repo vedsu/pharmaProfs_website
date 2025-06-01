@@ -24,6 +24,7 @@ export default {
             lightTeal: "#4ba2a2",
             lightCyan: "#c6e9e0",
             obsidianBlack: "#0b1215",
+            limedSpruce: "#455a64",
           },
           pText: "#212427",
           pTextLight: "#faf9f6",
