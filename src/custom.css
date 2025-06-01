@@ -278,8 +278,39 @@ nav {
 
 /*-----------------------------Login/Register & Tabs------------------------------------*/
 
+.pp-login-wrapper {
+  width: 100%;
+  padding: 80px 5px;
+}
+
 .log-reg-box {
-  box-shadow: 10px 7px 15px 5px #f9f9f9;
+  width: 100%;
+  max-width: 500px;
+}
+
+.log-reg-tab:hover,
+.log-reg-active-tab {
+  color: #faf9f6;
+  background-color: #94d1b9;
+}
+
+.log-reg-active-tab,
+.log-reg-active-tab:hover {
+  background-color: #5ad9b5d2;
+}
+
+.purchase-type-tab:hover,
+.purchase-type-active-tab {
+  background-color: #94d1b9;
+}
+
+.purchase-type-active-tab,
+.purchase-type-active-tab:hover {
+  background-color: #5ad9b5d2;
+}
+
+.purchase-type-tab:disabled {
+  background-color: #c2c2c2;
 }
 
 /*---------------------Webinar Listing----------------------------------------------*/

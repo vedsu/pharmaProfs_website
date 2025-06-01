@@ -342,7 +342,7 @@ const PageLoginOrRegister = () => {
 
   /*-------------------------Main Render-----------------------------------*/
   return (
-    <div className="p-prof-login-wrapper">
+    <div className="pp-login-wrapper">
       <div className="w-full flex items-center justify-center">
         <div className="my-20 px-5 py-10 flex gap-20 border border-primary-light-900 log-reg-box text-primary-pText">
           <div>{renderLoginSection()}</div>

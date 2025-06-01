@@ -9,8 +9,6 @@ import React, {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import CouponService from "services/CouponService";
-import NewsletterService from "services/NewsletterService";
 import SimpleReactValidator from "simple-react-validator";
 import AuthValidator from "../../components/AuthValidator";
 import ButtonCustom from "../../components/ButtonCustom";
@@ -32,6 +30,8 @@ import {
   LINK_PAGE_NEWSLETTERS,
   LINK_PAGE_WEBINAR_LISTING,
 } from "../../routes";
+import CouponService from "../../services/CouponService";
+import NewsletterService from "../../services/NewsletterService";
 import OrderService from "../../services/OrderService";
 import WebinarService from "../../services/WebinarService";
 import {
