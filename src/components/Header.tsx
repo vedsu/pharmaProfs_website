@@ -426,7 +426,7 @@ const Header = (props: IHeaderProps) => {
               <div>
                 <Link
                   to={LINK_PAGE_LOGIN_REG}
-                  className="nav-login-reg bg-primary-bg-obsidianBlack text-primary-pText rounded-full"
+                  className="nav-login-reg bg-primary-bg-lightCyan text-primary-pText rounded-full"
                 >
                   <span>Login / Register</span>
                   <i className="mx-2 text-xs pi pi-sign-in"></i>
