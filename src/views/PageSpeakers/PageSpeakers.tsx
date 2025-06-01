@@ -55,27 +55,27 @@ const PageSpeakers: React.FC = () => {
           onClickSpeakerCard(speakerInfo);
         }}
       >
-        <div className="card-scale col-span-1 border border-primary-light-900 rounded-lg p-2 flex flex-col items-center justify-center gap-2 cursor-pointer hover:opacity-80">
-          <div className="flex items-center justify-center text-xs">
+        <div className="card-scale col-span-1 border border-primary-light-900 rounded-lg p-2 flex flex-col gap-2 items-end justify-center cursor-pointer hover:opacity-80">
+          <div className="w-full flex items-center justify-center text-xs">
             <img
-              className="w-[300px] h-[220px] bg-slate-50 object-contain rounded-lg"
+              className="w-full h-[250px] bg-slate-50 object-fill rounded-lg"
               src={speakerInfo?.photo}
               alt="speaker's image"
             />
           </div>
-          <div className="w-[300px] font-semibold text-sm text-ellipsis overflow-hidden">
+          <div className="w-full font-semibold text-sm text-ellipsis overflow-hidden">
             <span className="py-2">{`Name :`}</span>
             <span
-              className="px-1 py-2 font-medium"
+              className="px-1 py-2 font-normal"
               title={getInitialLetterUpperCase(speakerInfo?.name) ?? "N.A."}
             >
               {getInitialLetterUpperCase(speakerInfo?.name) ?? "N.A."}
             </span>
           </div>
-          <div className="w-[300px] font-semibold text-sm text-ellipsis overflow-hidden">
+          <div className="w-full font-semibold text-sm text-ellipsis overflow-hidden">
             <span className="py-2">{`Industry :`}</span>
             <span
-              className="px-1 py-2 font-medium"
+              className="px-1 py-2 font-normal"
               title={getInitialLetterUpperCase(speakerInfo?.industry) ?? "N.A."}
             >
               {getInitialLetterUpperCase(speakerInfo?.industry) ?? "N.A."}
@@ -89,7 +89,7 @@ const PageSpeakers: React.FC = () => {
   /*-------------------------Main Render-----------------------------------*/
 
   return (
-    <div className="page-margin p-5 min-h-[50vh]">
+    <div className="page-margin w-full min-h-[50vh]">
       {isLoading ? (
         <div className="h-screen flex items-center justify-center">
           <i className="pi pi-spinner text-4xl animate-spin text-primary-bg-teal"></i>
@@ -97,7 +97,7 @@ const PageSpeakers: React.FC = () => {
       ) : (
         <React.Fragment>
           {speakers?.length ? (
-            <div className="grid grid-cols-3 gap-8">
+            <div className="w-full p-2 grid auto-rows-fr grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 sm:p-5">
               {speakers?.map((speaker, idx) =>
                 speakerGalleryCard(speaker, idx)
               )}

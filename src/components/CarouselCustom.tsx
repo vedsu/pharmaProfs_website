@@ -20,7 +20,7 @@ const CarouselCustom = (props: ICarouseProps) => {
   const responsiveOptions = [
     {
       breakpoint: "1400px",
-      numVisible: 2,
+      numVisible: 4,
       numScroll: 1,
     },
     {
@@ -29,12 +29,12 @@ const CarouselCustom = (props: ICarouseProps) => {
       numScroll: 1,
     },
     {
-      breakpoint: "767px",
+      breakpoint: "1100px",
       numVisible: 2,
       numScroll: 1,
     },
     {
-      breakpoint: "575px",
+      breakpoint: "980px",
       numVisible: 1,
       numScroll: 1,
     },
