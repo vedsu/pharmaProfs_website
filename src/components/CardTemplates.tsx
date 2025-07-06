@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { getInitialLetterUpperCase } from "utils/commonUtils";
-import { PURCHASE_ITEM } from "views/PageCart/PageCart";
+import { getInitialLetterUpperCase } from "../utils/commonUtils";
+import { PURCHASE_ITEM } from "../views/PageCart/PageCart";
 import { CARD_SUGGESTIONS } from "../constant";
 import { LINK_PAGE_NEWSLETTERS, LINK_PAGE_WEBINAR_LISTING } from "../routes";
 import ButtonCustom from "./ButtonCustom";

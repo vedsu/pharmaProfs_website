@@ -132,9 +132,7 @@ const PageWebinarInfo: React.FC = () => {
     }
   }, [
     corporatePurchaseTypeInfo.liveSessionCount,
-
     corporatePurchaseTypeInfo.recordingSessionCount,
-
     corporatePurchaseTypeInfo.ddSessionCount,
   ]);
 
