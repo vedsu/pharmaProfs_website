@@ -16,15 +16,15 @@ import DialogCustom from "./DialogCustom";
 import Input from "./Input";
 import SimpleReactValidator from "simple-react-validator";
 
-const initialSpeakerFormData = {
-  name: "",
-  email: "",
-  education: "",
-  country: "",
-  phone: "",
-  industry: "",
-  bio: "",
-};
+// const initialSpeakerFormData = {
+//   name: "",
+//   email: "",
+//   education: "",
+//   country: "",
+//   phone: "",
+//   industry: "",
+//   bio: "",
+// };
 
 const Footer = () => {
   const currYear = new Date().getFullYear();
