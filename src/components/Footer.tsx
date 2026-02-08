@@ -1,8 +1,5 @@
-import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import { InputTextarea } from "primereact/inputtextarea";
 import { BaseSyntheticEvent, ReactNode, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import brandLogo from "../assets/images/pp_brand_logo.png";
 import {
   LINK_PAGE_ABOUT_US,
   LINK_PAGE_CONTACT_US,
@@ -36,9 +33,6 @@ const Footer = () => {
   const [formUnsubscribeData, setFormUnsubscribeData] = useState({
     email: "",
   });
-  const [speakerFormData, setSpeakerFormData] = useState(
-    initialSpeakerFormData
-  );
   const [showUnsubscribePopUp, setShowUnsubscribePopUp] = useState({
     isSuccess: false,
     showPopUp: false,
@@ -46,7 +40,7 @@ const Footer = () => {
     bodyContent: <div />,
   });
   const simpleValidator = useRef(
-    new SimpleReactValidator({ className: "text-danger" })
+    new SimpleReactValidator({ className: "text-danger" }),
   );
   const [_, forceUpdate] = useState<any>();
 
@@ -108,7 +102,7 @@ const Footer = () => {
             validationMessage={simpleValidator.current.message(
               "email",
               email,
-              "required|email"
+              "required|email",
             )}
           />
         </div>
